@@ -1,0 +1,48 @@
+const bestSellers = [
+    {
+        id: 5,
+        name: "Vintage Blue Wide Leg",
+        price: 2799,
+        comparePrice: 3299,
+        image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800",
+        hoverImage: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800",
+        rating: 4.9,
+        reviews: 76,
+        badge: "BEST SELLER",
+    },
+    {
+        id: 6,
+        name: "Slim Fit Denim",
+        price: 2499,
+        comparePrice: 2999,
+        image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=800",
+        hoverImage: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800",
+        rating: 4.8,
+        reviews: 59,
+        badge: "BEST SELLER",
+    },
+    {
+        id: 7,
+        name: "Classic Straight Jeans",
+        price: 2599,
+        comparePrice: 3099,
+        image: "https://images.unsplash.com/photo-1475180098004-ca77a66827be?w=800",
+        hoverImage: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=800",
+        rating: 4.9,
+        reviews: 81,
+        badge: "BEST SELLER",
+    },
+    {
+        id: 8,
+        name: "Everyday Comfort Fit",
+        price: 2399,
+        comparePrice: 2899,
+        image: "https://images.unsplash.com/photo-1544441893-675973e31985?w=800",
+        hoverImage: "https://images.unsplash.com/photo-1582418702059-97ebafb35d09?w=800",
+        rating: 4.7,
+        reviews: 64,
+        badge: "BEST SELLER",
+    },
+];
+
+export default bestSellers;

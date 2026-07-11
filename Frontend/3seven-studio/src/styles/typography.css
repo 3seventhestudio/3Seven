@@ -1,0 +1,21 @@
+/* Heading Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.1;
+}
+
+/* Body Typography */
+body,
+button,
+input,
+textarea,
+select {
+    font-family: "Inter", sans-serif;
+}

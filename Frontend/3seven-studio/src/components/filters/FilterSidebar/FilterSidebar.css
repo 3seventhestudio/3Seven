@@ -1,0 +1,69 @@
+.filter-sidebar{
+    display:flex;
+    flex-direction:column;
+    gap:35px;
+}
+
+.filter-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.filter-header h3{
+    font-size:22px;
+}
+
+.clear-btn{
+    border:none;
+    background:none;
+    cursor:pointer;
+    color:#777;
+    font-size:14px;
+}
+
+.clear-btn:hover{
+    color:#111;
+}
+
+.filter-section h4{
+    margin-bottom:18px;
+    font-size:16px;
+}
+
+.filter-option{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.filter-option input{
+    cursor:pointer;
+}
+
+.size-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.size-btn{
+    height:42px;
+    border:1px solid #ddd;
+    background:#fff;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.size-btn:hover{
+    border-color:#111;
+}
+
+.size-btn.active{
+    background:#111;
+    color:#fff;
+    border-color:#111;
+}

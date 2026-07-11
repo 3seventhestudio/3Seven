@@ -1,0 +1,51 @@
+.section-heading{
+
+    max-width:700px;
+
+    margin-bottom:70px;
+
+}
+
+.section-heading.center{
+
+    margin-inline:auto;
+
+    text-align:center;
+
+}
+
+.section-subtitle{
+
+    color:var(--color-secondary);
+
+    text-transform:uppercase;
+
+    letter-spacing:.35em;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    margin-bottom:18px;
+
+}
+
+.section-heading h2{
+
+    font-size:60px;
+
+    line-height:1;
+
+    margin-bottom:24px;
+
+}
+
+.section-description{
+
+    color:var(--color-text-light);
+
+    line-height:1.8;
+
+    font-size:17px;
+
+}

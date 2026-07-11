@@ -1,0 +1,33 @@
+:root {
+
+  /* Colors */
+
+  --color-primary: #1B2233;
+  --color-secondary: #A3274C;
+  --color-background: #F8F4EF;
+  --color-surface: #FFFFFF;
+
+  --color-text: #1E1E1E;
+  --color-text-light: #666666;
+
+  --color-border: #E7E1D9;
+
+  /* Radius */
+
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 36px;
+  --radius-pill: 999px;
+
+  /* Shadow */
+
+  --shadow-soft: 0 20px 60px rgba(0,0,0,.08);
+
+  /* Container */
+
+  --container: 1320px;
+
+  /* Transition */
+
+  --transition: .35s ease;
+}

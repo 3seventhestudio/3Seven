@@ -1,0 +1,199 @@
+.navbar {
+
+    position: fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    z-index:999;
+
+    transition:.4s ease;
+
+    padding:28px 0;
+
+}
+
+.navbar-scrolled{
+
+    background:rgba(255,255,255,.85);
+
+    backdrop-filter:blur(16px);
+
+    box-shadow:0 10px 40px rgba(0,0,0,.06);
+
+    padding:18px 0;
+
+}
+
+.navbar-container {
+    width: min(1320px, 92%);
+    margin: auto;
+    display: grid;
+    grid-template-columns: 220px 1fr 220px;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--color-text);
+}
+
+.logo-number {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 46px;
+    font-weight: 700;
+    margin-right: 4px;
+}
+
+.logo-text {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.nav {
+    display: flex;
+    justify-content: center;
+    gap: 42px;
+}
+
+.nav a{
+
+    position:relative;
+
+    font-size:14px;
+
+    font-weight:500;
+
+}
+
+.nav a::after{
+
+    content:"";
+
+    position:absolute;
+
+    bottom:-8px;
+
+    left:0;
+
+    width:0;
+
+    height:1px;
+
+    background:black;
+
+    transition:.3s;
+
+}
+
+.nav a:hover::after{
+
+    width:100%;
+
+}
+
+.navbar-icons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    font-size: 22px;
+}
+
+.cart-icon{
+
+    position:relative;
+
+}
+
+.cart-icon span{
+
+    position:absolute;
+
+    top:-7px;
+
+    right:-8px;
+
+    width:18px;
+
+    height:18px;
+
+    background:var(--color-secondary);
+
+    color:white;
+
+    border-radius:50%;
+
+    font-size:10px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.mobile-toggle{
+
+    display:none;
+
+}
+
+@media(max-width:992px){
+
+.nav{
+
+position:fixed;
+
+top:0;
+
+right:-100%;
+
+width:300px;
+
+height:100vh;
+
+background:white;
+
+flex-direction:column;
+
+padding:120px 40px;
+
+transition:.4s;
+
+}
+
+.nav.active{
+
+right:0;
+
+}
+
+.mobile-toggle{
+
+display:block;
+
+border:none;
+
+background:none;
+
+font-size:28px;
+
+}
+
+.navbar-icons{
+
+gap:16px;
+
+}
+
+}

@@ -1,0 +1,72 @@
+.shop-toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+    padding-bottom:20px;
+    border-bottom:1px solid #ececec;
+    gap:20px;
+}
+
+.toolbar-left{
+    color:#666;
+    font-size:15px;
+}
+
+.toolbar-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.toolbar-right select{
+    height:44px;
+    border:1px solid #ddd;
+    padding:0 14px;
+    background:#fff;
+    cursor:pointer;
+    border-radius:8px;
+    font-size:14px;
+}
+
+.grid-buttons{
+    display:flex;
+    gap:10px;
+}
+
+.grid-buttons button{
+    width:42px;
+    height:42px;
+    border:1px solid #ddd;
+    background:#fff;
+    cursor:pointer;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.3s;
+}
+
+.grid-buttons button:hover{
+    border-color:#111;
+}
+
+.grid-buttons button.active{
+    background:#111;
+    color:#fff;
+    border-color:#111;
+}
+
+@media(max-width:768px){
+
+.shop-toolbar{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.toolbar-right{
+width:100%;
+justify-content:space-between;
+}
+
+}

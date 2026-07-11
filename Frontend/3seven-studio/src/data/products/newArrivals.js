@@ -1,0 +1,48 @@
+const newArrivals = [
+  {
+    id: 1,
+    name: "High Rise Straight Jeans",
+    price: 2499,
+    comparePrice: 2999,
+    image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800",
+    hoverImage: "https://images.unsplash.com/photo-1582418702059-97ebafb35d09?w=800",
+    rating: 4.8,
+    reviews: 42,
+    badge: "NEW",
+  },
+  {
+    id: 2,
+    name: "Classic Blue Denim",
+    price: 2699,
+    comparePrice: 3299,
+    image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=800",
+    hoverImage: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800",
+    rating: 4.9,
+    reviews: 51,
+    badge: "NEW",
+  },
+  {
+    id: 3,
+    name: "Relaxed Fit Jeans",
+    price: 2299,
+    comparePrice: 2799,
+    image: "https://images.unsplash.com/photo-1475180098004-ca77a66827be?w=800",
+    hoverImage: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=800",
+    rating: 4.7,
+    reviews: 31,
+    badge: "NEW",
+  },
+  {
+    id: 4,
+    name: "Premium Dark Wash",
+    price: 2899,
+    comparePrice: 3499,
+    image: "https://images.unsplash.com/photo-1544441893-675973e31985?w=800",
+    hoverImage: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800",
+    rating: 5.0,
+    reviews: 68,
+    badge: "NEW",
+  },
+];
+
+export default newArrivals;
