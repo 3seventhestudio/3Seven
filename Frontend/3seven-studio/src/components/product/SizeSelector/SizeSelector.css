@@ -1,0 +1,65 @@
+.size-selector{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+}
+
+.size-selector h4{
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#222;
+
+}
+
+.size-list{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+}
+
+.size-list button{
+
+    width:54px;
+
+    height:54px;
+
+    border:1px solid #ddd;
+
+    border-radius:12px;
+
+    background:#fff;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    font-weight:600;
+
+}
+
+.size-list button:hover{
+
+    border-color:#111;
+
+}
+
+.size-list button.active{
+
+    background:#111;
+
+    color:#fff;
+
+    border-color:#111;
+
+}

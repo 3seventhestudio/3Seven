@@ -1,0 +1,2 @@
+class EnviaAPIException(Exception):
+    pass

@@ -33,21 +33,24 @@ function Shop() {
 
   const [sortBy, setSortBy] = useState("featured");
   const [gridColumns, setGridColumns] = useState(3);
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const productsPerPage = 12;
   const{ products, loading, error } = useProducts();
+  console.log("Products:", products);
 
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
     if (selectedCategory !== "All") {
       result = result.filter(
-        (product) => product.category === selectedCategory
+        (product) => product.category?.name === selectedCategory
       );
     }
 
     if (onlyNew) {
       result = result.filter(
-        (product) => product.badge === "NEW"
+        (product) => product.new_arrival
       );
     }
 
@@ -61,7 +64,7 @@ function Shop() {
         break;
 
       case "rating":
-        result.sort((a, b) => b.rating - a.rating);
+        //result.sort((a, b) => b.rating - a.rating);
         break;
 
       case "name":
@@ -74,6 +77,7 @@ function Shop() {
 
     return result;
   }, [
+    products,
     selectedCategory,
     onlyNew,
     sortBy,
@@ -97,7 +101,7 @@ function Shop() {
     (currentPage - 1) * productsPerPage,
     currentPage * productsPerPage
   );
-
+  console.log("Displayed Products:", displayedProducts);
   const clearFilters = () => {
     setSelectedCategory("All");
     setSelectedSize("");

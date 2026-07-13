@@ -1,0 +1,125 @@
+.login-header{
+
+    margin-bottom:36px;
+
+}
+
+.login-subtitle{
+
+    display:inline-block;
+
+    margin-bottom:14px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    color:#8B7355;
+
+}
+
+.login-header h2{
+
+    font-size:40px;
+
+    font-weight:400;
+
+    line-height:1.2;
+
+    color:#1F1F1F;
+
+    margin-bottom:12px;
+
+}
+
+.login-header p{
+
+    font-size:16px;
+
+    line-height:1.7;
+
+    color:#6A6A6A;
+
+}
+
+.login-links{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    margin-top:-6px;
+
+    margin-bottom:24px;
+
+}
+
+.login-links a{
+
+    color:#2C2C2C;
+
+    text-decoration:none;
+
+    font-size:14px;
+
+    font-weight:500;
+
+    transition:.3s;
+
+}
+
+.login-links a:hover{
+
+    color:#000;
+
+}
+
+.login-error{
+
+    margin-bottom:20px;
+
+    padding:14px 16px;
+
+    border-radius:12px;
+
+    background:#FFF2F2;
+
+    border:1px solid #FFD0D0;
+
+    color:#B91C1C;
+
+    font-size:14px;
+
+}
+
+.register-link{
+
+    margin-top:28px;
+
+    text-align:center;
+
+    color:#666;
+
+    font-size:15px;
+
+}
+
+.register-link a{
+
+    color:#111;
+
+    font-weight:600;
+
+    text-decoration:none;
+
+}
+
+.register-link a:hover{
+
+    text-decoration:underline;
+
+}

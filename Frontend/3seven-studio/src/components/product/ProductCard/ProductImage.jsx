@@ -21,13 +21,13 @@ function ProductImage({ product }) {
       </button>
 
       <img
-        src={product.image}
+        src={product.thumbnail}
         alt={product.name}
         className="product-image primary-image"
       />
 
       <img
-        src={product.hoverImage}
+        src={product.thumbnail}
         alt={product.name}
         className="product-image hover-image"
       />

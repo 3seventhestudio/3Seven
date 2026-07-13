@@ -9,11 +9,13 @@ import './styles/animations.css';
 import './styles/utilities.css';
 import './styles/globals.css';
 import { CartProvider } from "./context/CartContext";
-
+import { AuthProvider } from "./context/AuthContext";
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <CartProvider>
-      <App />
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <App />
+      </CartProvider>
+    </AuthProvider>
   </React.StrictMode>,
 );

@@ -1,0 +1,95 @@
+.register-header{
+
+    margin-bottom:36px;
+
+}
+
+.register-subtitle{
+
+    display:inline-block;
+
+    margin-bottom:14px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    color:#8B7355;
+
+}
+
+.register-header h2{
+
+    font-size:40px;
+
+    font-weight:400;
+
+    line-height:1.2;
+
+    color:#1F1F1F;
+
+    margin-bottom:12px;
+
+}
+
+.register-header p{
+
+    font-size:16px;
+
+    line-height:1.7;
+
+    color:#6A6A6A;
+
+}
+
+.register-error{
+
+    margin-bottom:20px;
+
+    padding:14px 16px;
+
+    border-radius:12px;
+
+    background:#FFF2F2;
+
+    border:1px solid #FFD0D0;
+
+    color:#B91C1C;
+
+    font-size:14px;
+
+}
+
+.login-link{
+
+    margin-top:28px;
+
+    text-align:center;
+
+    color:#666;
+
+    font-size:15px;
+
+}
+
+.login-link a{
+
+    color:#111;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    margin-left:6px;
+
+}
+
+.login-link a:hover{
+
+    text-decoration:underline;
+
+}

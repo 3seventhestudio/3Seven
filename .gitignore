@@ -224,3 +224,5 @@ Backend/venv/
 Backend/db.sqlite3
 Backend/db.sqlite3-journal
 Backend/.env
+./node_modules/
+*.pub

@@ -9,6 +9,7 @@ from .selectors import (
     CategorySelector,
     ProductSelector,
 )
+
 from .serializers import (
     CategorySerializer,
     ProductListSerializer,
@@ -24,12 +25,13 @@ class CategoryListAPIView(APIView):
 
         serializer = CategorySerializer(
             categories,
-            many=True
+            many=True,
+            context={"request": request},
         )
 
         return success_response(
             data=serializer.data,
-            message="Categories fetched successfully."
+            message="Categories fetched successfully.",
         )
 
 
@@ -37,25 +39,30 @@ class ProductListAPIView(APIView):
 
     def get(self, request):
 
-        queryset = ProductSelector.get_products(request.query_params)
+        queryset = ProductSelector.get_products(
+            request.query_params
+        )
 
         paginator = StandardResultsPagination()
 
         page = paginator.paginate_queryset(
             queryset,
-            request
+            request,
         )
-
+        print("Testing", ProductListSerializer)
         serializer = ProductListSerializer(
             page,
-            many=True
+            many=True,
+            context={"request": request},
         )
 
-        return paginator.get_paginated_response({
-            "success": True,
-            "message": "Products fetched successfully.",
-            "data": serializer.data,
-        })
+        return paginator.get_paginated_response(
+            {
+                "success": True,
+                "message": "Products fetched successfully.",
+                "data": serializer.data,
+            }
+        )
 
 
 class ProductDetailAPIView(APIView):
@@ -67,12 +74,16 @@ class ProductDetailAPIView(APIView):
             slug=slug,
         )
 
-        serializer = ProductDetailSerializer(product)
+        serializer = ProductDetailSerializer(
+            product,
+            context={"request": request},
+        )
 
         return success_response(
             data=serializer.data,
-            message="Product fetched successfully."
+            message="Product fetched successfully.",
         )
+
 
 class FeaturedProductAPIView(APIView):
 
@@ -82,10 +93,47 @@ class FeaturedProductAPIView(APIView):
 
         serializer = ProductListSerializer(
             queryset,
-            many=True
+            many=True,
+            context={"request": request},
         )
 
         return success_response(
             data=serializer.data,
-            message="Featured products fetched successfully."
+            message="Featured products fetched successfully.",
+        )
+
+
+class NewArrivalProductAPIView(APIView):
+
+    def get(self, request):
+
+        queryset = ProductSelector.get_new_arrivals()
+
+        serializer = ProductListSerializer(
+            queryset,
+            many=True,
+            context={"request": request},
+        )
+
+        return success_response(
+            data=serializer.data,
+            message="New arrival products fetched successfully.",
+        )
+
+
+class BestSellerProductAPIView(APIView):
+
+    def get(self, request):
+
+        queryset = ProductSelector.get_best_sellers()
+
+        serializer = ProductListSerializer(
+            queryset,
+            many=True,
+            context={"request": request},
+        )
+
+        return success_response(
+            data=serializer.data,
+            message="Best seller products fetched successfully.",
         )

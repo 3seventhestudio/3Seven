@@ -1,0 +1,47 @@
+.auth-button{
+
+    width:100%;
+
+    height:56px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#111111;
+
+    color:#FFFFFF;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+    cursor:pointer;
+
+    transition:all .3s ease;
+
+}
+
+.auth-button:hover{
+
+    background:#222222;
+
+    transform:translateY(-2px);
+
+}
+
+.auth-button:active{
+
+    transform:translateY(0);
+
+}
+
+.auth-button:disabled{
+
+    opacity:.7;
+
+    cursor:not-allowed;
+
+}

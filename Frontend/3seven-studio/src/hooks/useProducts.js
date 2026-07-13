@@ -9,13 +9,16 @@ export default function useProducts(filters = {}) {
   const fetchProducts = async () => {
     try {
       setLoading(true);
+      setError("");
 
       const response = await getProducts(filters);
+      console.log("API Response:", response);
 
-      setProducts(response.data);
+      setProducts(response.results?.data || []);
     } catch (err) {
       setError("Unable to load products.");
       console.error(err);
+      setProducts([]);
     } finally {
       setLoading(false);
     }

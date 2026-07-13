@@ -1,0 +1,49 @@
+.auth-card{
+
+    width:100%;
+
+    max-width:500px;
+
+    padding:38px;
+
+    border-radius:28px;
+
+    background:rgba(255,255,255,.84);
+
+    backdrop-filter:blur(24px);
+
+    -webkit-backdrop-filter:blur(24px);
+
+    border:1px solid rgba(255,255,255,.45);
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.15);
+
+    color:#1f1f1f;
+
+    transition:all .35s ease;
+
+    box-sizing:border-box;
+
+}
+
+.auth-card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+        0 35px 80px rgba(0,0,0,.20);
+
+}
+
+@media (max-width:768px){
+
+    .auth-card{
+
+        padding:32px 24px;
+
+        border-radius:22px;
+
+    }
+
+}
