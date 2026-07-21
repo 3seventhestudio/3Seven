@@ -1,52 +1,58 @@
 .shop-page{
-    padding:60px 0 90px;
-    background:#fff;
+    padding:70px 0 100px;
+    background:#faf9f7;
 }
 
 .shop-header{
     display:flex;
     justify-content:space-between;
     align-items:flex-end;
-    gap:30px;
-    margin-bottom:55px;
+    gap:40px;
+    margin-bottom:60px;
 }
 
 .shop-header h1{
-    font-size:42px;
-    font-weight:700;
-    margin-bottom:15px;
+    font-size:48px;
+    font-weight:500;
+    line-height:1.1;
     color:#111;
+    margin-bottom:18px;
+    letter-spacing:-1px;
 }
 
 .shop-header p{
-    max-width:620px;
+    max-width:640px;
     color:#666;
     line-height:1.8;
-    font-size:15px;
+    font-size:16px;
 }
 
 .shop-result{
-    color:#555;
+    font-size:15px;
+    color:#666;
     white-space:nowrap;
 }
 
 .shop-result strong{
     color:#111;
+    font-weight:600;
 }
 
 .shop-layout{
     display:grid;
     grid-template-columns:280px 1fr;
-    gap:50px;
+    gap:60px;
+    align-items:start;
 }
 
 .shop-sidebar{
-    border:1px solid #ececec;
+    background:#fff;
+    border:1px solid #ededed;
+    border-radius:14px;
     padding:28px;
-    border-radius:10px;
-    align-self:start;
     position:sticky;
     top:110px;
+    height:fit-content;
 }
 
 .shop-products{
@@ -55,8 +61,16 @@
 
 .products-grid{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:32px;
+    grid-template-columns:repeat(3,minmax(280px,1fr));
+    gap:38px 32px;
+}
+
+@media (max-width:1400px){
+
+.products-grid{
+grid-template-columns:repeat(3,1fr);
+}
+
 }
 
 @media (max-width:1200px){
@@ -67,15 +81,7 @@ grid-template-columns:repeat(2,1fr);
 
 }
 
-@media (max-width:768px){
-
-.products-grid{
-grid-template-columns:1fr;
-}
-
-}
-
-@media(max-width:992px){
+@media (max-width:992px){
 
 .shop-layout{
 grid-template-columns:1fr;
@@ -92,16 +98,37 @@ align-items:flex-start;
 }
 
 .shop-header h1{
+font-size:40px;
+}
+
+.products-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+@media (max-width:768px){
+
+.shop-page{
+padding:50px 0 80px;
+}
+
+.products-grid{
+grid-template-columns:1fr;
+gap:28px;
+}
+
+.shop-header h1{
 font-size:34px;
 }
 
+.shop-header p{
+font-size:15px;
 }
 
-@media(max-width:576px){
-
-.shop-page{
-padding:40px 0 70px;
 }
+
+@media (max-width:576px){
 
 .shop-header{
 margin-bottom:35px;
@@ -111,7 +138,7 @@ margin-bottom:35px;
 font-size:30px;
 }
 
-.shop-header p{
+.shop-result{
 font-size:14px;
 }
 

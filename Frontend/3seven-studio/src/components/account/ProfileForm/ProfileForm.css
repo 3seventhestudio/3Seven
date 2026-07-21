@@ -1,0 +1,113 @@
+.profile-view{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.profile-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 0;
+    border-bottom:1px solid #f2f2f2;
+}
+
+.profile-row:last-child{
+    border-bottom:none;
+}
+
+.profile-row label{
+    font-weight:600;
+    color:#444;
+}
+
+.profile-row span{
+    color:#666;
+}
+
+.profile-form{
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.form-grid input,
+.form-grid select{
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    font-size:15px;
+    outline:none;
+    transition:.3s;
+    box-sizing:border-box;
+}
+
+.form-grid input:focus,
+.form-grid select:focus{
+    border-color:#111;
+}
+
+.form-grid input:disabled{
+    background:#f5f5f5;
+    cursor:not-allowed;
+}
+
+.profile-actions{
+    display:flex;
+    gap:16px;
+}
+
+.profile-actions button{
+    padding:14px 24px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+    transition:.3s;
+}
+
+.profile-actions button[type="submit"]{
+    background:#111;
+    color:#fff;
+}
+
+.profile-actions button[type="submit"]:hover{
+    background:#000;
+}
+
+.profile-actions button[type="button"]{
+    background:#ececec;
+}
+
+.profile-actions button[type="button"]:hover{
+    background:#ddd;
+}
+
+@media(max-width:768px){
+
+.form-grid{
+    grid-template-columns:1fr;
+}
+
+.profile-row{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
+}
+
+.profile-actions{
+    flex-direction:column;
+}
+
+.profile-actions button{
+    width:100%;
+}
+
+}

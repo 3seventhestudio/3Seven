@@ -1,0 +1,39 @@
+.address-modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    padding:20px;
+}
+
+.address-modal{
+    width:100%;
+    max-width:700px;
+    max-height:90vh;
+    overflow-y:auto;
+    background:#fff;
+    border-radius:12px;
+    padding:28px;
+}
+
+.address-modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:24px;
+}
+
+.address-modal-header h2{
+    margin:0;
+}
+
+.close-btn{
+    border:none;
+    background:none;
+    font-size:28px;
+    cursor:pointer;
+    line-height:1;
+}

@@ -1,0 +1,76 @@
+.address-form{
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+}
+
+.address-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.address-grid input,
+.address-grid select{
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    font-size:15px;
+    box-sizing:border-box;
+}
+
+.address-grid input:focus,
+.address-grid select:focus{
+    outline:none;
+    border-color:#111;
+}
+
+.default-checkbox{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:500;
+}
+
+.address-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+}
+
+.address-actions button{
+    padding:12px 22px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.address-actions button[type="button"]{
+    background:#ececec;
+}
+
+.address-actions button[type="submit"]{
+    background:#111;
+    color:#fff;
+}
+
+.address-actions button[type="submit"]:hover{
+    background:#000;
+}
+
+@media(max-width:768px){
+
+.address-grid{
+    grid-template-columns:1fr;
+}
+
+.address-actions{
+    flex-direction:column;
+}
+
+.address-actions button{
+    width:100%;
+}
+
+}

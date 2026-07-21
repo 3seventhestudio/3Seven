@@ -4,13 +4,7 @@ import "./ProductGallery.css";
 function ProductGallery({ product }) {
 
     const images = [
-        ...(product.thumbnail
-            ? [{
-                image: product.thumbnail,
-                alt_text: product.name,
-            }]
-            : []),
-        ...(product.images || []),
+    ...(product.images || [])
     ];
 
     const [selectedImage, setSelectedImage] = useState(
@@ -19,8 +13,12 @@ function ProductGallery({ product }) {
 
     useEffect(() => {
 
-        if (images.length) {
-            setSelectedImage(images[0].image);
+        if(images.length){
+            const primary =
+                images.find(img => img.is_primary) ||
+                images[0];
+
+            setSelectedImage(primary.image);
         }
 
     }, [product]);

@@ -8,12 +8,12 @@ from .product_variant import ProductVariantSerializer
 class ProductListSerializer(serializers.ModelSerializer):
 
     category = serializers.CharField(source="category.name")
-
     thumbnail = serializers.SerializerMethodField()
-
     in_stock = serializers.ReadOnlyField()
-
     discount_percentage = serializers.SerializerMethodField()
+    default_variant_id = serializers.SerializerMethodField()
+    default_size = serializers.SerializerMethodField()
+    default_color = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
@@ -25,6 +25,9 @@ class ProductListSerializer(serializers.ModelSerializer):
             "price",
             "compare_price",
             "discount_percentage",
+            "default_variant_id",
+            "default_size",
+            "default_color",
             "thumbnail",
             "in_stock",
             "featured",
@@ -65,6 +68,31 @@ class ProductListSerializer(serializers.ModelSerializer):
 
         return 0
 
+    def get_default_variant_id(self, obj):
+
+        variant = obj.variants.filter(
+            is_active=True
+        ).first()
+
+        return str(variant.id) if variant else None
+
+
+    def get_default_size(self, obj):
+
+        variant = obj.variants.filter(
+            is_active=True
+        ).first()
+
+        return variant.size.name if variant else None
+
+
+    def get_default_color(self, obj):
+
+        variant = obj.variants.filter(
+            is_active=True
+        ).first()
+
+        return variant.color.name if variant else None
 
 class ProductDetailSerializer(serializers.ModelSerializer):
 

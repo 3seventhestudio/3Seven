@@ -1,0 +1,35 @@
+.order-address-card {
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.order-address-card h2 {
+    margin: 0 0 18px;
+    font-size: 20px;
+    color: #222;
+}
+
+.address-content p {
+    margin: 6px 0;
+    color: #555;
+    line-height: 1.6;
+}
+
+.address-name {
+    font-weight: 700;
+    color: #222;
+}
+
+.address-type {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #f4f4f4;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}

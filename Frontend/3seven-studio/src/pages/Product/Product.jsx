@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import Navbar from "../../components/layout/Navbar/Navbar";
 import Footer from "../../components/layout/Footer/Footer";
@@ -11,16 +11,26 @@ import ProductTabs from "../../components/product/ProductTabs/ProductTabs";
 import RelatedProducts from "../../components/product/RelatedProducts/RelatedProducts";
 
 import { getProduct } from "../../services/productService";
+import { useCart } from "../../context/CartContext";
 
 import "./Product.css";
 
 function Product() {
 
     const { slug } = useParams();
+    const navigate = useNavigate();
+
+    const { addToCart } = useCart();
 
     const [product, setProduct] = useState(null);
 
     const [loading, setLoading] = useState(true);
+
+    const [selectedVariant, setSelectedVariant] = useState(null);
+
+    const [selectedSize, setSelectedSize] = useState("");
+
+    const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
 
@@ -34,19 +44,65 @@ function Product() {
 
             setLoading(true);
 
-            const response = await getProduct(slug);
+            const productData = await getProduct(slug);
+            setProduct(productData);
 
-            setProduct(response.data);
+            if (productData.variants?.length) {
 
-        }
-        catch (error) {
+                setSelectedVariant(productData.variants[0]);
+
+                setSelectedSize(productData.variants[0].size);
+
+            }
+
+        } catch (error) {
 
             console.error(error);
 
-        }
-        finally {
+        } finally {
 
             setLoading(false);
+
+        }
+
+    };
+
+    const handleAddToCart = async () => {
+
+        if (!selectedVariant) {
+
+            alert("Please select a size.");
+
+            return;
+
+        }
+
+        try {
+
+            await addToCart(
+                selectedVariant.id,
+                quantity,
+                {
+                    id: product.id,
+                    product_name: product.name,
+                    product_slug: product.slug,
+                    thumbnail: product.thumbnail,
+                    price: Number(selectedVariant.price),
+                    size: selectedVariant.size,
+                    color: selectedVariant.color,
+                }
+            );
+
+            alert("Product added to cart.");
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                error?.response?.data?.message ||
+                "Unable to add product to cart."
+            );
 
         }
 
@@ -67,6 +123,7 @@ function Product() {
     return (
 
         <>
+
             <Navbar />
 
             <Breadcrumb
@@ -95,6 +152,13 @@ function Product() {
 
                     <ProductDetails
                         product={product}
+                        selectedVariant={selectedVariant}
+                        setSelectedVariant={setSelectedVariant}
+                        selectedSize={selectedSize}
+                        setSelectedSize={setSelectedSize}
+                        quantity={quantity}
+                        setQuantity={setQuantity}
+                        onAddToCart={handleAddToCart}
                     />
 
                 </div>

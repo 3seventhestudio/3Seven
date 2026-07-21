@@ -1,4 +1,4 @@
-import ProductPrice from "./ProductPrice";
+import ProductPrice from "../ProductCard/ProductPrice";
 
 function ProductInfo({ product }) {
   return (

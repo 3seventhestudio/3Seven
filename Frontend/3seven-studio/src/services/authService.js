@@ -29,3 +29,15 @@ export const refreshToken = async () => {
 
   return response.data;
 };
+
+/**
+ * Change Password
+ */
+export const changePassword = async (payload) => {
+    const response = await api.post(
+        "/accounts/change-password/",
+        payload
+    );
+
+    return response.data;
+};

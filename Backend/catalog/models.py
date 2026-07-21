@@ -61,7 +61,11 @@ class Product(BaseModel):
 
     @property
     def in_stock(self):
-        return self.stock_quantity > 0
+        return self.variants.filter(
+            is_active=True,
+            is_deleted=False,
+            stock_quantity__gt=0,
+        ).exists()
 
     def __str__(self):
         return self.name

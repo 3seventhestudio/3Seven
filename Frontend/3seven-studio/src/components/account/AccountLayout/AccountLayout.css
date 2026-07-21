@@ -1,0 +1,65 @@
+.account-page {
+
+    background: #fafafa;
+
+    padding: 40px 20px 80px;
+
+    min-height: 70vh;
+
+}
+
+.account-container {
+
+    max-width: 1320px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns: 280px 1fr;
+
+    gap: 32px;
+
+    align-items: start;
+
+}
+
+.account-content {
+
+    background: #fff;
+
+    border-radius: 12px;
+
+    padding: 32px;
+
+    border: 1px solid #ececec;
+
+    min-height: 600px;
+
+}
+
+.account-title {
+
+    margin: 0 0 30px;
+
+    font-size: 28px;
+
+    font-weight: 600;
+
+}
+
+@media (max-width:991px){
+
+.account-container{
+
+grid-template-columns:1fr;
+
+}
+
+.account-content{
+
+padding:24px;
+
+}
+
+}

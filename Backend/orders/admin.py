@@ -26,7 +26,7 @@ class OrderAdmin(admin.ModelAdmin):
         "status",
         "payment_method",
         "payment_status",
-        "total",
+        "grand_total",
         "created_at",
     )
 

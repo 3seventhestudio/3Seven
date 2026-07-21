@@ -6,8 +6,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from rest_framework_simplejwt.views import TokenRefreshView
+from django.contrib.auth.password_validation import validate_password
 
-from common.responses import success_response
+from common.responses import success_response, error_response
 
 from accounts.serializers.auth import RegisterSerializer, LoginSerializer
 from accounts.serializers.profile import ProfileSerializer, UpdateProfileSerializer
@@ -18,7 +19,9 @@ from accounts.models import Address
 from accounts.serializers.address import AddressSerializer, CreateUpdateAddressSerializer
 from accounts.selectors.address_selector import AddressSelector
 from accounts.services.address_service import AddressService
-
+from accounts.selectors.dashboard_selector import DashboardSelector
+from accounts.serializers.dashboard_serializer import DashboardSerializer
+from accounts.serializers import ChangePasswordSerializer
 
 @extend_schema(tags=["Authentication"], summary="Register User", request=RegisterSerializer)
 class RegisterAPIView(APIView):
@@ -220,3 +223,53 @@ class AddressDefaultAPIView(APIView):
             "message": "Default address updated successfully.",
             "data": AddressSerializer(address).data,
         }, status=status.HTTP_200_OK)
+
+class DashboardAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        dashboard = DashboardSelector.get_dashboard(
+            request.user
+        )
+
+        serializer = DashboardSerializer(dashboard)
+
+        return success_response(
+            message="Dashboard fetched successfully.",
+            data=serializer.data,
+        )
+    
+class ChangePasswordAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        serializer = ChangePasswordSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return error_response(
+                message="Validation failed.",
+                errors=serializer.errors,
+            )
+
+        user = request.user
+
+        if not user.check_password(
+            serializer.validated_data["current_password"]
+        ):
+            return error_response(
+                message="Current password is incorrect."
+            )
+
+        user.set_password(
+            serializer.validated_data["new_password"]
+        )
+
+        user.save()
+
+        return success_response(
+            message="Password changed successfully."
+        )

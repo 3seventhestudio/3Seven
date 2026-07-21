@@ -2,17 +2,41 @@ import { Heart, ShoppingBag, Zap } from "lucide-react";
 
 import QuantitySelector from "../QuantitySelector/QuantitySelector";
 import SizeSelector from "../SizeSelector/SizeSelector";
+import { useCart} from "../../../context/CartContext";
 
 import "./ProductDetails.css";
 
-function ProductDetails({ product }) {
+function ProductDetails({
+    product,
+    selectedVariant,
+    setSelectedVariant,
+    selectedSize,
+    setSelectedSize,
+    quantity,
+    setQuantity,
+    onAddToCart,
+}) {
+
+    const handleSizeChange = (size) => {
+
+        setSelectedSize(size);
+
+        const variant = product.variants.find(
+            (item) => item.size === size
+        );
+
+        if (variant) {
+            setSelectedVariant(variant);
+        }
+
+    };
 
     return (
 
         <div className="product-details">
 
             <span className="product-category">
-                {product.category?.name || product.category}
+                {product.category}
             </span>
 
             <h1 className="product-title">
@@ -22,58 +46,67 @@ function ProductDetails({ product }) {
             <div className="product-price-row">
 
                 <span className="selling-price">
-                    ₹{product.price}
+                    ₹{selectedVariant?.price || product.price}
                 </span>
 
-                {
-                    product.compare_price && (
+                {product.compare_price && (
 
-                        <span className="compare-price">
-                            ₹{product.compare_price}
-                        </span>
+                    <span className="compare-price">
+                        ₹{product.compare_price}
+                    </span>
 
-                    )
-                }
+                )}
 
-                {
-                    product.discount_percentage > 0 && (
+                {product.discount_percentage > 0 && (
 
-                        <span className="discount-badge">
+                    <span className="discount-badge">
+                        {product.discount_percentage}% OFF
+                    </span>
 
-                            {product.discount_percentage}% OFF
-
-                        </span>
-
-                    )
-                }
+                )}
 
             </div>
 
             <div className="stock-status">
 
-                {
-                    product.in_stock
-                        ? "✔ In Stock"
-                        : "✖ Out of Stock"
-                }
+                {selectedVariant?.stock_quantity > 0
+                    ? `✔ In Stock (${selectedVariant.stock_quantity} available)`
+                    : "✖ Out of Stock"}
 
             </div>
 
             <p className="short-description">
-
                 {product.short_description}
-
             </p>
 
             <SizeSelector
                 variants={product.variants}
+                value={selectedSize}
+                onChange={(size) => {
+
+                    setSelectedSize(size);
+
+                    const variant = product.variants.find(
+                        (item) => item.size === size
+                    );
+
+                    setSelectedVariant(variant);
+
+                }}
             />
 
-            <QuantitySelector max={10}/>
+            <QuantitySelector
+                value={quantity}
+                max={selectedVariant?.stock_quantity || 10}
+                onChange={setQuantity}
+            />
 
             <div className="product-actions">
 
-                <button className="add-cart-btn">
+                <button
+                    className="add-cart-btn"
+                    onClick={onAddToCart}
+                >
 
                     <ShoppingBag size={20} />
 
@@ -81,7 +114,10 @@ function ProductDetails({ product }) {
 
                 </button>
 
-                <button className="buy-now-btn">
+                <button
+                    className="buy-now-btn"
+                    disabled={!selectedVariant}
+                >
 
                     <Zap size={20} />
 

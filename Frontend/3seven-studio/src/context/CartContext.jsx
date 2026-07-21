@@ -6,81 +6,243 @@ import {
   useState,
 } from "react";
 
+import {
+  getCart,
+  addToCart as addToCartApi,
+  updateCartItem,
+  removeCartItem,
+} from "../services/cartService";
+
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  const [cartItems, setCartItems] = useState(() => {
-    const saved = localStorage.getItem("cart");
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-    return saved ? JSON.parse(saved) : [];
-  });
+  const loadCart = async () => {
+    const token = localStorage.getItem("access_token");
+
+    // Guest user
+    if (!token) {
+      setCartItems([]);
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const cart = await getCart();
+
+      setCartItems(cart.items || []);
+
+    } catch (error) {
+
+      // If the token is invalid after refresh attempt,
+      // just clear the cart instead of crashing.
+      if (error.response?.status === 401) {
+        setCartItems([]);
+        return;
+      }
+
+      console.error("Unable to load cart", error);
+
+      setCartItems([]);
+
+    } finally {
+
+      setLoading(false);
+
+    }
+  };
 
   useEffect(() => {
-    localStorage.setItem(
-      "cart",
-      JSON.stringify(cartItems)
-    );
-  }, [cartItems]);
 
-  const addToCart = (product) => {
+    const token = localStorage.getItem("access_token");
+
+    if (token) {
+
+      loadCart();
+
+    } else {
+
+      const guestCart = JSON.parse(
+        localStorage.getItem("guest_cart") || "[]"
+      );
+
+      setCartItems(guestCart);
+
+    }
+
+  }, []);
+
+  useEffect(() => {
+
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+
+      localStorage.setItem(
+        "guest_cart",
+        JSON.stringify(cartItems)
+      );
+
+    }
+
+  }, [cartItems]);
+  const addToCart = async (
+    productVariantId,
+    quantity = 1,
+    productData = null
+  ) => {
+
+    const token = localStorage.getItem("access_token");
+
+    // Logged-in user → Backend Cart
+    if (token) {
+
+      await addToCartApi(
+        productVariantId,
+        quantity
+      );
+
+      await loadCart();
+
+      return;
+    }
+
+    // Guest Cart → localStorage
+
     setCartItems((current) => {
+
       const existing = current.find(
-        (item) => item.id === product.id
+        (item) =>
+          item.variant_id === productVariantId
       );
 
       if (existing) {
+
         return current.map((item) =>
-          item.id === product.id
+          item.variant_id === productVariantId
             ? {
                 ...item,
-                quantity: item.quantity + 1,
+                quantity:
+                  item.quantity + quantity,
               }
             : item
         );
+
       }
 
       return [
         ...current,
         {
-          ...product,
-          quantity: 1,
+          ...productData,
+          variant_id: productVariantId,
+          quantity,
         },
       ];
+
     });
+
   };
 
-  const removeFromCart = (id) => {
-    setCartItems((current) =>
-      current.filter((item) => item.id !== id)
-    );
+  const increaseQuantity = async (item) => {
+
+      const token = localStorage.getItem("access_token");
+
+      if (!token) {
+
+          setCartItems(current =>
+              current.map(cartItem =>
+                  cartItem.variant_id === item.variant_id
+                      ? {
+                            ...cartItem,
+                            quantity: cartItem.quantity + 1,
+                        }
+                      : cartItem
+              )
+          );
+
+          return;
+      }
+
+      await updateCartItem(
+          item.id,
+          item.quantity + 1
+      );
+
+      await loadCart();
+
   };
 
-  const increaseQuantity = (id) => {
-    setCartItems((current) =>
-      current.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              quantity: item.quantity + 1,
-            }
-          : item
-      )
-    );
+  const decreaseQuantity = async (item) => {
+
+      const token = localStorage.getItem("access_token");
+
+      if (!token) {
+
+          if (item.quantity === 1) {
+
+              setCartItems(current =>
+                  current.filter(
+                      cartItem =>
+                          cartItem.variant_id !== item.variant_id
+                  )
+              );
+
+              return;
+          }
+
+          setCartItems(current =>
+              current.map(cartItem =>
+                  cartItem.variant_id === item.variant_id
+                      ? {
+                            ...cartItem,
+                            quantity: cartItem.quantity - 1,
+                        }
+                      : cartItem
+              )
+          );
+
+          return;
+      }
+
+      if (item.quantity <= 1) {
+
+          await removeCartItem(item.id);
+
+      } else {
+
+          await updateCartItem(
+              item.id,
+              item.quantity - 1
+          );
+
+      }
+
+      await loadCart();
+
   };
 
-  const decreaseQuantity = (id) => {
-    setCartItems((current) =>
-      current
-        .map((item) =>
-          item.id === id
-            ? {
-                ...item,
-                quantity: item.quantity - 1,
-              }
-            : item
-        )
-        .filter((item) => item.quantity > 0)
-    );
+  const removeFromCart = async (id) => {
+
+      const token = localStorage.getItem("access_token");
+
+      if (!token) {
+
+          setCartItems(current =>
+              current.filter(
+                  item => item.variant_id !== id
+              )
+          );
+
+          return;
+      }
+
+      await removeCartItem(id);
+
+      await loadCart();
+
   };
 
   const clearCart = () => {
@@ -100,25 +262,64 @@ export function CartProvider({ children }) {
     () =>
       cartItems.reduce(
         (total, item) =>
-          total + item.price * item.quantity,
+          total + Number(item.price) * item.quantity,
         0
       ),
     [cartItems]
   );
 
-  const value = {
-    cartItems,
-    cartCount,
+  const shippingCharge = useMemo(() => {
+    return subtotal >= 999 ? 0 : 99;
+  }, [subtotal]);
+
+  const codCharge = useMemo(() => {
+    return 0;
+  }, []);
+
+  const gst = useMemo(() => {
+    return 0;
+  }, []);
+
+  const discount = useMemo(() => {
+    return 0;
+  }, []);
+
+  const grandTotal = useMemo(() => {
+    return (
+      subtotal +
+      shippingCharge +
+      codCharge +
+      gst -
+      discount
+    );
+  }, [
     subtotal,
-    addToCart,
-    removeFromCart,
-    increaseQuantity,
-    decreaseQuantity,
-    clearCart,
-  };
+    shippingCharge,
+    codCharge,
+    gst,
+    discount,
+  ]);
 
   return (
-    <CartContext.Provider value={value}>
+    <CartContext.Provider
+      value={{
+        loading,
+        cartItems,
+        cartCount,
+        subtotal,
+        shippingCharge,
+        codCharge,
+        gst,
+        discount,
+        grandTotal,
+        loadCart,
+        addToCart,
+        removeFromCart,
+        increaseQuantity,
+        decreaseQuantity,
+        clearCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

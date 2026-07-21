@@ -3,18 +3,19 @@ import { Link } from "react-router-dom";
 import {
   FiSearch,
   FiHeart,
-  FiShoppingBag,
   FiMenu,
   FiX,
 } from "react-icons/fi";
+import CartIcon from "../../cart/CartIcon/CartIcon";
+import CartDrawer from "../../cart/CartDrawer/CartDrawer";
 import navigation from "../../../data/navigation";
 import "./Navbar.css";
-import { useCart } from "../../../context/CartContext";
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
-  const { cartCount } = useCart();
+  const [cartOpen, setCartOpen] = useState(false);
+  console.log("cartOpen =", cartOpen);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,26 +27,24 @@ function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  return (
+return (
+  <>
     <header className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
 
       <div className="navbar-container">
 
         <Link to="/" className="logo">
-
-        <span className="logo-number">3</span>
-
-        <span className="logo-text">Seven Studio</span>
-
-      </Link>
+          <span className="logo-number">3</span>
+          <span className="logo-text">3Seven Studio</span>
+        </Link>
 
         <nav className={mobileMenu ? "nav active" : "nav"}>
-  {navigation.map((item) => (
-    <Link key={item.id} to={item.path}>
-      {item.label}
-    </Link>
-  ))}
-</nav>
+          {navigation.map((item) => (
+            <Link key={item.id} to={item.path}>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
 
         <div className="navbar-icons">
 
@@ -53,13 +52,12 @@ function Navbar() {
 
           <FiHeart />
 
-          <div className="cart-icon">
-
-            <FiShoppingBag />
-
-            <span>{cartCount}</span>
-
-          </div>
+          <CartIcon
+            onClick={() => {
+              console.log("Cart icon clicked");
+              setCartOpen(true);
+            }}
+          />
 
           <button
             className="mobile-toggle"
@@ -73,7 +71,13 @@ function Navbar() {
       </div>
 
     </header>
-  );
+
+    <CartDrawer
+      isOpen={cartOpen}
+      onClose={() => setCartOpen(false)}
+    />
+  </>
+);
 }
 
 export default Navbar;

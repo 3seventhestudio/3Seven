@@ -1,7 +1,7 @@
 import "./ProductCard.css";
 import { Link } from "react-router-dom";
 import ProductImage from "./ProductImage";
-import ProductInfo from "./ProductInfo";
+import ProductInfo from "../ProductInfo/ProductInfo";
 
 function ProductCard({ product }) {
   return (

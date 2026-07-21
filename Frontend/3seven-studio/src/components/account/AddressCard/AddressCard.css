@@ -1,0 +1,84 @@
+.address-card{
+    background:#fff;
+    border:1px solid #ececec;
+    border-radius:12px;
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.address-card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.address-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:600;
+    text-transform:capitalize;
+}
+
+.default-badge{
+    background:#111;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+}
+
+.address-body h4{
+    margin:0 0 12px;
+}
+
+.address-body p{
+    margin:6px 0;
+    color:#666;
+    line-height:1.6;
+}
+
+.address-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.address-btn{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border:none;
+    padding:10px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.default-btn{
+    background:#111;
+    color:#fff;
+}
+
+.default-btn:hover{
+    background:#000;
+}
+
+.edit-btn{
+    background:#ececec;
+}
+
+.edit-btn:hover{
+    background:#ddd;
+}
+
+.delete-btn{
+    background:#ffebeb;
+    color:#c0392b;
+}
+
+.delete-btn:hover{
+    background:#ffd8d8;
+}

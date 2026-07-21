@@ -1,0 +1,39 @@
+.checkout-page{
+    padding:60px 0;
+    background:#fafafa;
+    min-height:100vh;
+}
+
+.checkout-container{
+    width:min(1400px,92%);
+    margin:auto;
+
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:40px;
+
+    align-items:start;
+}
+
+.checkout-left{
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+}
+
+.checkout-right{
+    position:sticky;
+    top:120px;
+}
+
+@media(max-width:992px){
+
+.checkout-container{
+    grid-template-columns:1fr;
+}
+
+.checkout-right{
+    position:static;
+}
+
+}

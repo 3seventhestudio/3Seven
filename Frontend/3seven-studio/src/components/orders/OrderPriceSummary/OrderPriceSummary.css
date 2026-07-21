@@ -1,0 +1,37 @@
+.order-price-summary {
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.order-price-summary h2 {
+    margin: 0 0 20px;
+    font-size: 20px;
+    color: #222;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    color: #555;
+}
+
+.summary-row.discount {
+    color: #2e7d32;
+}
+
+.summary-row.grand-total {
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+}
+
+.order-price-summary hr {
+    border: none;
+    border-top: 1px solid #ececec;
+    margin: 16px 0;
+}
