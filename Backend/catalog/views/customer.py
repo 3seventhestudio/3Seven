@@ -5,12 +5,12 @@ from rest_framework.views import APIView
 from common.pagination import StandardResultsPagination
 from common.responses import success_response
 
-from .selectors import (
+from ..selectors import (
     CategorySelector,
     ProductSelector,
 )
 
-from .serializers import (
+from ..serializers import (
     CategorySerializer,
     ProductListSerializer,
     ProductDetailSerializer,

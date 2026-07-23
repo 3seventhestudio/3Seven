@@ -5,8 +5,8 @@ from django.db import transaction
 
 from cart.models import Cart
 from common.models import StoreSettings
-from orders.models import Order, OrderItem, PaymentMethod
-
+from orders.models import Order, OrderItem, PaymentMethod, OrderStatusHistory
+from orders.selectors import AdminOrderSelector
 
 class OrderService:
 
@@ -209,5 +209,39 @@ class OrderService:
 
         order.status = Order.CONFIRMED
         order.save(update_fields=["status"])
+
+        return order
+
+from orders.models import Order, OrderStatusHistory
+from orders.selectors import AdminOrderSelector
+
+
+class AdminOrderService:
+
+    @staticmethod
+    def get_orders(filters=None):
+        return AdminOrderSelector.get_orders(filters)
+
+    @staticmethod
+    def get_order(order_id):
+        return AdminOrderSelector.get_order(order_id)
+
+    @staticmethod
+    def update_order(order, validated_data):
+        status = validated_data.pop("status", None)
+
+        for field, value in validated_data.items():
+            setattr(order, field, value)
+
+        if status and status != order.status:
+            order.status = status
+
+            OrderStatusHistory.objects.create(
+                order=order,
+                status=status,
+                comment=validated_data.get("notes", ""),
+            )
+
+        order.save()
 
         return order

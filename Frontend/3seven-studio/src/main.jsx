@@ -8,8 +8,11 @@ import './styles/typography.css';
 import './styles/animations.css';
 import './styles/utilities.css';
 import './styles/globals.css';
+import "./styles/admin.css";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
+
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>

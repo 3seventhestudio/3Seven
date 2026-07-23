@@ -5,8 +5,8 @@ from drf_spectacular.utils import extend_schema
 from accounts.models import Address
 from common.responses import success_response, error_response
 from orders.models import Order
-from orders.serializers import CheckoutSerializer, OrderSerializer
-from orders.services import OrderService
+from orders.serializers import CheckoutSerializer, OrderSerializer, AdminOrderDetailSerializer, AdminOrderListSerializer, AdminOrderUpdateSerializer
+from orders.services import OrderService, AdminOrderService
 
 
 class CheckoutAPIView(APIView):
@@ -119,3 +119,59 @@ class OrderDetailAPIView(APIView):
                 message="Order not found.",
                 status_code=status.HTTP_404_NOT_FOUND,
             )
+
+class AdminOrderListAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        orders = AdminOrderService.get_orders(request.query_params)
+
+        serializer = AdminOrderListSerializer(
+            orders,
+            many=True,
+        )
+
+        return success_response(
+            message="Orders fetched successfully.",
+            data=serializer.data,
+        )
+
+
+class AdminOrderDetailAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, order_id):
+        order = AdminOrderService.get_order(order_id)
+
+        serializer = AdminOrderDetailSerializer(order)
+
+        return success_response(
+            message="Order fetched successfully.",
+            data=serializer.data,
+        )
+
+    def put(self, request, order_id):
+        order = AdminOrderService.get_order(order_id)
+
+        serializer = AdminOrderUpdateSerializer(
+            order,
+            data=request.data,
+            partial=True,
+        )
+
+        if not serializer.is_valid():
+            return error_response(
+                message="Validation failed.",
+                errors=serializer.errors,
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
+
+        order = AdminOrderService.update_order(
+            order,
+            serializer.validated_data,
+        )
+
+        return success_response(
+            message="Order updated successfully.",
+            data=AdminOrderDetailSerializer(order).data,
+        )
