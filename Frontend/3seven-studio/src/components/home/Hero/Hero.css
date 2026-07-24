@@ -6,6 +6,13 @@
     position: relative;
     overflow: hidden;
     background: linear-gradient(180deg, #fbf8f3 0%, #f3ece4 100%);
+    padding-top: 106px;
+}
+
+@media (max-width: 992px) {
+    .hero {
+        padding-top: 80px;
+    }
 }
 
 .hero-grid {

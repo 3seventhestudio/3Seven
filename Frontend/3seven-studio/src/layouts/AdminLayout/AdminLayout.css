@@ -1,0 +1,26 @@
+.admin-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+    background: var(--admin-bg);
+    font-family: "Inter", sans-serif;
+}
+
+.admin-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-width: 0;
+}
+
+.admin-content {
+    padding: 40px;
+    flex-grow: 1;
+    background: var(--admin-bg);
+}
+
+@media (max-width: 992px) {
+    .admin-layout {
+        grid-template-columns: 1fr;
+    }
+}

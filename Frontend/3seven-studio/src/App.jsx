@@ -9,14 +9,19 @@ import Register from "./pages/Register/Register";
 import Cart from "./pages/Cart/Cart";
 import Checkout from "./pages/Checkout/Checkout";
 
-import OrderSuccess from "./pages/orders/OrderSuccess/OrderSuccess";
-import MyOrders from "./pages/orders/MyOrders/MyOrders";
-import OrderDetails from "./pages/orders/OrderDetails/OrderDetails";
+import About from "./pages/About/About";
+import Journal from "./pages/Journal/Journal";
+import Collections from "./pages/Collections/Collections";
+import Contact from "./pages/Contact/Contact";
 
-import AccountDashboard from "./pages/account/Dashboard/Dashboard";
-import Profile from "./pages/account/Profile/Profile";
-import ManageAddresses from "./pages/account/ManageAddresses/ManageAddresses";
-import ChangePassword from "./pages/account/ChangePassword/ChangePassword";
+import OrderSuccess from "./pages/Orders/OrderSuccess/OrderSuccess";
+import MyOrders from "./pages/Orders/MyOrders/MyOrders";
+import OrderDetails from "./pages/Orders/OrderDetails/OrderDetails";
+
+import AccountDashboard from "./pages/Account/Dashboard/Dashboard";
+import Profile from "./pages/Account/Profile/Profile";
+import ManageAddresses from "./pages/Account/ManageAddresses/ManageAddresses";
+import ChangePassword from "./pages/Account/ChangePassword/ChangePassword";
 
 import AdminLayout from "./layouts/AdminLayout/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard/Dashboard";
@@ -44,6 +49,10 @@ function App() {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/collections" element={<Collections />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/journal" element={<Journal />} />
+                <Route path="/contact" element={<Contact />} />
                 <Route path="/orders" element={<MyOrders />} />
                 <Route path="/orders/success/:orderNumber" element={<OrderSuccess />} />
                 <Route path="/orders/:orderNumber" element={<OrderDetails />} />

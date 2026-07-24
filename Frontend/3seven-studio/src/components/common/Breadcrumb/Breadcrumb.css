@@ -1,6 +1,13 @@
 .breadcrumb-container{
     background:#fafafa;
     border-bottom:1px solid #ececec;
+    margin-top: 106px;
+}
+
+@media (max-width: 992px) {
+    .breadcrumb-container{
+        margin-top: 80px;
+    }
 }
 
 .breadcrumb{

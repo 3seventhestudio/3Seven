@@ -1,0 +1,105 @@
+.admin-sidebar {
+    background: #111111;
+    color: #ffffff;
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid #222222;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    box-sizing: border-box;
+}
+
+.admin-logo {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-bottom: 50px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #222222;
+}
+
+.admin-sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-grow: 1;
+}
+
+.admin-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #aaaaaa;
+    text-decoration: none;
+    padding: 12px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.admin-menu svg {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.admin-menu:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.admin-menu:hover svg {
+    transform: translateX(3px);
+}
+
+.admin-menu.active {
+    color: #ffffff;
+    background: #222222;
+    font-weight: 600;
+}
+
+.admin-sidebar .logout-btn {
+    background: none;
+    border: 1px solid #333333;
+    color: #aaaaaa;
+    padding: 12px 18px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.admin-sidebar .logout-btn:hover {
+    color: #ffffff;
+    border-color: #dc2626;
+    background: rgba(220, 38, 38, 0.1);
+}
+
+@media (max-width: 992px) {
+    .admin-sidebar {
+        height: auto;
+        position: relative;
+        padding: 24px;
+        border-right: none;
+        border-bottom: 1px solid #222222;
+    }
+    
+    .admin-logo {
+        margin-bottom: 25px;
+        padding-bottom: 10px;
+    }
+}

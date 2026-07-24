@@ -1,6 +1,6 @@
-import "./Footer.css";
-
+import { Link } from "react-router-dom";
 import Container from "../../common/Container/Container";
+import "./Footer.css";
 import {
     FiFacebook,
     FiInstagram,
@@ -45,10 +45,10 @@ function Footer() {
 
                         <ul>
 
-                            <li><a href="#">New Arrivals</a></li>
-                            <li><a href="#">Best Sellers</a></li>
-                            <li><a href="#">Collections</a></li>
-                            <li><a href="#">Sale</a></li>
+                            <li><Link to="/shop">New Arrivals</Link></li>
+                            <li><Link to="/shop">Best Sellers</Link></li>
+                            <li><Link to="/collections">Collections</Link></li>
+                            <li><Link to="/shop">Sale</Link></li>
 
                         </ul>
 
@@ -60,10 +60,10 @@ function Footer() {
 
                         <ul>
 
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms & Conditions</a></li>
+                            <li><Link to="/about">About Us</Link></li>
+                            <li><Link to="/contact">Contact</Link></li>
+                            <li><Link to="/journal">Journal</Link></li>
+                            <li><Link to="/admin">Admin Portal</Link></li>
 
                         </ul>
 

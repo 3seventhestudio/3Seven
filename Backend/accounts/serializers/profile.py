@@ -14,6 +14,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "last_name",
             "phone_number",
             "email_verified",
+            "is_staff",
             "created_at",
             "updated_at",
         ]

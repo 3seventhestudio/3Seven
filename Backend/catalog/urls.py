@@ -1,6 +1,6 @@
 from django.urls import path
 from .views.customer import (CategoryListAPIView, ProductListAPIView, ProductDetailAPIView, FeaturedProductAPIView, NewArrivalProductAPIView, BestSellerProductAPIView)
-from catalog.views.admin import ( AdminProductListAPIView, AdminProductDetailAPIView, AdminCategoryListAPIView, AdminCategoryDetailAPIView)
+from catalog.views.admin import ( AdminProductListAPIView, AdminProductDetailAPIView, AdminCategoryListAPIView, AdminCategoryDetailAPIView, AdminCategoryDropdownAPIView)
 
 urlpatterns = [
 
@@ -14,5 +14,6 @@ urlpatterns = [
     path("admin/products/<uuid:product_id>/", AdminProductDetailAPIView.as_view(), name="admin-product-detail"),
     # Admin Category Management
     path("admin/categories/", AdminCategoryListAPIView.as_view(), name="admin-categories"),
+    path("admin/categories/dropdown/", AdminCategoryDropdownAPIView.as_view(), name="admin-category-dropdown"),
     path("admin/categories/<uuid:category_id>/", AdminCategoryDetailAPIView.as_view(), name="admin-category-detail"),
 ]

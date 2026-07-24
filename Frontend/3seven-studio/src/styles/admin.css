@@ -1,19 +1,20 @@
 /* ==========================================================
-   3Seven Studio Admin Panel
+   3Seven Studio Admin Panel Premium Stylesheet
    ========================================================== */
 
 :root {
-    --admin-bg: #f5f7fb;
+    --admin-bg: #F8F4EF;
     --admin-card-bg: #ffffff;
-    --admin-border: #e5e7eb;
+    --admin-border: #E7E1D9;
 
-    --admin-text: #1f2937;
-    --admin-text-light: #6b7280;
+    --admin-text: #1E1E1E;
+    --admin-text-light: #666666;
 
     --success: #16a34a;
     --warning: #d97706;
     --danger: #dc2626;
-    --primary: #2563eb;
+    --primary: #1B2233;
+    --accent: #A3274C;
 }
 
 /* ==========================================================
@@ -23,7 +24,13 @@
 .admin-page {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 30px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* ==========================================================
@@ -34,13 +41,19 @@
 .admin-card {
     background: var(--admin-card-bg);
     border: 1px solid var(--admin-border);
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    border-radius: var(--radius-sm, 12px);
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
+}
+
+.card:hover,
+.admin-card:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
 }
 
 .card + .card {
-    margin-top: 20px;
+    margin-top: 24px;
 }
 
 /* ==========================================================
@@ -50,33 +63,40 @@
 .table-responsive {
     width: 100%;
     overflow-x: auto;
+    border-radius: var(--radius-sm, 12px);
+    border: 1px solid var(--admin-border);
+    background: #ffffff;
 }
 
 .table,
 .admin-table {
     width: 100%;
     border-collapse: collapse;
+    background: #ffffff;
 }
 
 .table thead,
 .admin-table thead {
-    background: #f8fafc;
+    background: var(--admin-bg);
+    border-bottom: 2px solid var(--admin-border);
 }
 
 .table th,
 .table td,
 .admin-table th,
 .admin-table td {
-    padding: 14px 16px;
-    border-bottom: 1px solid #ececec;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--admin-border);
     text-align: left;
     vertical-align: middle;
 }
 
 .table th,
 .admin-table th {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     color: var(--admin-text);
 }
 
@@ -86,9 +106,19 @@
     color: var(--admin-text-light);
 }
 
+.table tbody tr,
+.admin-table tbody tr {
+    transition: background 0.25s ease;
+}
+
 .table tbody tr:hover,
 .admin-table tbody tr:hover {
-    background: #fafafa;
+    background: rgba(27, 34, 51, 0.02);
+}
+
+.table tbody tr:last-child td,
+.admin-table tbody tr:last-child td {
+    border-bottom: none;
 }
 
 /* ==========================================================
@@ -98,47 +128,58 @@
 .admin-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
 }
 
 .form-group {
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
     margin-bottom: 8px;
+    font-size: 13px;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--admin-text);
 }
 
 .form-control {
     width: 100%;
-    padding: 10px 14px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    transition: .2s;
+    padding: 12px 16px;
+    border: 1px solid var(--admin-border);
+    border-radius: var(--radius-sm, 12px);
+    transition: all 0.3s ease;
     font-size: 14px;
+    background: #ffffff;
+    color: var(--admin-text);
 }
 
 .form-control:focus {
     outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(163, 39, 76, 0.08);
 }
 
 textarea.form-control {
     resize: vertical;
+    min-height: 120px;
 }
 
 .form-check {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .form-check-input {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid var(--admin-border);
+    cursor: pointer;
+    accent-color: var(--accent);
 }
 
 /* ==========================================================
@@ -150,42 +191,65 @@ textarea.form-control {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 8px;
+    padding: 12px 24px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm, 12px);
     cursor: pointer;
-    font-weight: 500;
-    transition: .2s;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
     text-decoration: none;
 }
 
 .btn-sm {
-    padding: 7px 14px;
-    font-size: 13px;
+    padding: 8px 16px;
+    font-size: 12px;
+    border-radius: 8px;
 }
 
 .btn-primary {
     background: var(--primary);
-    color: #fff;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: var(--accent);
+    box-shadow: 0 10px 20px rgba(163, 39, 76, 0.15);
+    transform: translateY(-2px);
 }
 
 .btn-success {
     background: var(--success);
-    color: #fff;
+    color: #ffffff;
+}
+
+.btn-success:hover {
+    box-shadow: 0 10px 20px rgba(22, 163, 74, 0.15);
+    transform: translateY(-2px);
 }
 
 .btn-warning {
     background: var(--warning);
-    color: #fff;
+    color: #ffffff;
+}
+
+.btn-warning:hover {
+    box-shadow: 0 10px 20px rgba(217, 119, 6, 0.15);
+    transform: translateY(-2px);
 }
 
 .btn-danger {
     background: var(--danger);
-    color: #fff;
+    color: #ffffff;
 }
 
-.btn:hover {
-    opacity: .9;
+.btn-danger:hover {
+    box-shadow: 0 10px 20px rgba(220, 38, 38, 0.15);
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
 }
 
 /* ==========================================================
@@ -196,35 +260,41 @@ textarea.form-control {
     margin-right: 8px;
 }
 
+.table td .btn:last-child {
+    margin-right: 0;
+}
+
 /* ==========================================================
    Status Badge
    ========================================================== */
 
 .badge {
     display: inline-block;
-    padding: 5px 10px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill, 999px);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .badge-success {
-    background: #dcfce7;
+    background: rgba(22, 163, 74, 0.1);
     color: var(--success);
 }
 
 .badge-warning {
-    background: #fef3c7;
+    background: rgba(217, 119, 6, 0.1);
     color: var(--warning);
 }
 
 .badge-danger {
-    background: #fee2e2;
+    background: rgba(220, 38, 38, 0.1);
     color: var(--danger);
 }
 
 .badge-primary {
-    background: #dbeafe;
+    background: rgba(27, 34, 51, 0.08);
     color: var(--primary);
 }
 
@@ -235,28 +305,30 @@ textarea.form-control {
 .table img,
 .form-group img {
     border-radius: 8px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--admin-border);
     object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 /* ==========================================================
-   Empty State
+   Empty State & Loading
    ========================================================== */
 
 .empty-state {
-    padding: 50px;
+    padding: 60px 40px;
     text-align: center;
     color: var(--admin-text-light);
+    font-size: 16px;
+    background: #ffffff;
+    border-radius: var(--radius-sm, 12px);
+    border: 1px solid var(--admin-border);
 }
-
-/* ==========================================================
-   Loading
-   ========================================================== */
 
 .loading-state {
     text-align: center;
-    padding: 60px;
+    padding: 80px 40px;
     color: var(--admin-text-light);
+    font-size: 16px;
 }
 
 /* ==========================================================
@@ -264,20 +336,21 @@ textarea.form-control {
    ========================================================== */
 
 @media (max-width: 768px) {
-
     .card,
     .admin-card {
-        padding: 18px;
+        padding: 20px;
     }
 
     .table th,
     .table td,
     .admin-table th,
     .admin-table td {
+        padding: 12px 16px;
         white-space: nowrap;
     }
 
     .btn {
+        padding: 10px 16px;
         font-size: 13px;
     }
 }

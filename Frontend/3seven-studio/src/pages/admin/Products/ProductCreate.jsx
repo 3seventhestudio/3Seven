@@ -47,8 +47,8 @@ function ProductCreate() {
         try {
 
             const response = await getCategoryDropdown();
-            if (response.data.sucess){
-                setCategories(response.data.data);
+            if (response.success){
+                setCategories(response.data);
             }
 
         } catch (error) {

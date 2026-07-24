@@ -8,7 +8,8 @@ from common.responses import success_response, error_response
 
 from catalog.selectors import AdminProductSelector
 from catalog.services import AdminProductService, AdminCategoryService
-from catalog.serializers.product import ( AdminProductListSerializer, AdminProductDetailSerializer, AdminProductCreateUpdateSerializer, AdminCategorySerializer)
+from catalog.models import Category
+from catalog.serializers.product import ( AdminProductListSerializer, AdminProductDetailSerializer, AdminProductCreateUpdateSerializer, AdminCategorySerializer, AdminCategoryDropdownSerializer)
 
 
 
@@ -236,4 +237,16 @@ class AdminCategoryDetailAPIView(APIView):
 
         return success_response(
             message="Category deleted successfully.",
+        )
+
+
+class AdminCategoryDropdownAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        categories = Category.objects.filter(is_active=True, is_deleted=False)
+        serializer = AdminCategoryDropdownSerializer(categories, many=True)
+        return success_response(
+            message="Categories dropdown fetched successfully.",
+            data=serializer.data,
         )

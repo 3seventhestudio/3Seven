@@ -60,6 +60,7 @@ class LoginAPIView(APIView):
                     "email": result["user"].email,
                     "first_name": result["user"].first_name,
                     "last_name": result["user"].last_name,
+                    "is_staff": result["user"].is_staff,
                 }
             }
         }, status=status.HTTP_200_OK)

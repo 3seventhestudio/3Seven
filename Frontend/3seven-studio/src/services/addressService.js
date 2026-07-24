@@ -43,7 +43,7 @@ export const deleteAddress = async (addressId) => {
  * Set default address
  */
 export const setDefaultAddress = async (addressId) => {
-    const response = await api.post(
+    const response = await api.patch(
         `accounts/addresses/${addressId}/default/`
     );
 

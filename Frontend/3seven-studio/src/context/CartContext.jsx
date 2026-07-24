@@ -12,6 +12,7 @@ import {
   updateCartItem,
   removeCartItem,
 } from "../services/cartService";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
 
@@ -33,7 +34,7 @@ export function CartProvider({ children }) {
 
       const cart = await getCart();
 
-      setCartItems(cart.items || []);
+      setCartItems(cart.data?.items || []);
 
     } catch (error) {
 
@@ -55,40 +56,43 @@ export function CartProvider({ children }) {
     }
   };
 
+  const { isAuthenticated } = useAuth();
+
   useEffect(() => {
-
-    const token = localStorage.getItem("access_token");
-
-    if (token) {
-
-      loadCart();
-
+    if (isAuthenticated) {
+      const mergeGuestCart = async () => {
+        const guestCart = JSON.parse(
+          localStorage.getItem("guest_cart") || "[]"
+        );
+        if (guestCart.length > 0) {
+          try {
+            for (const item of guestCart) {
+              await addToCartApi(item.variant_id, item.quantity);
+            }
+          } catch (e) {
+            console.error("Error merging guest cart", e);
+          }
+          localStorage.removeItem("guest_cart");
+        }
+        await loadCart();
+      };
+      mergeGuestCart();
     } else {
-
       const guestCart = JSON.parse(
         localStorage.getItem("guest_cart") || "[]"
       );
-
       setCartItems(guestCart);
-
     }
-
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
-
-    const token = localStorage.getItem("access_token");
-
-    if (!token) {
-
+    if (!isAuthenticated) {
       localStorage.setItem(
         "guest_cart",
         JSON.stringify(cartItems)
       );
-
     }
-
-  }, [cartItems]);
+  }, [cartItems, isAuthenticated]);
   const addToCart = async (
     productVariantId,
     quantity = 1,
@@ -224,7 +228,7 @@ export function CartProvider({ children }) {
 
   };
 
-  const removeFromCart = async (id) => {
+  const removeFromCart = async (item) => {
 
       const token = localStorage.getItem("access_token");
 
@@ -232,14 +236,14 @@ export function CartProvider({ children }) {
 
           setCartItems(current =>
               current.filter(
-                  item => item.variant_id !== id
+                  cartItem => cartItem.variant_id !== item.variant_id
               )
           );
 
           return;
       }
 
-      await removeCartItem(id);
+      await removeCartItem(item.id);
 
       await loadCart();
 

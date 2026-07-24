@@ -90,7 +90,7 @@ class AdminProductSelector:
             .prefetch_related(
                 Prefetch(
                     "images",
-                    queryset=ProductImage.objects.order_by("sort_order"),
+                    queryset=ProductImage.objects.order_by("display_order"),
                 ),
                 Prefetch(
                     "variants",

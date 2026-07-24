@@ -14,7 +14,7 @@ import "./AccountSidebar.css";
 
 function AccountSidebar() {
     const navigate = useNavigate();
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
 
     const handleLogout = () => {
         logout();
@@ -90,6 +90,17 @@ function AccountSidebar() {
                     <FaKey />
                     <span>Change Password</span>
                 </NavLink>
+
+                {user?.is_staff && (
+                    <NavLink
+                        to="/admin"
+                        className="account-link"
+                        style={{ borderTop: "1px dashed var(--color-border)", marginTop: "10px", paddingTop: "15px" }}
+                    >
+                        <FaTachometerAlt style={{ color: "var(--color-secondary)" }} />
+                        <span style={{ color: "var(--color-secondary)", fontWeight: "600" }}>Admin Panel</span>
+                    </NavLink>
+                )}
 
                 <button
                     type="button"

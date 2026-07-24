@@ -38,7 +38,7 @@ function CartItem({ item }) {
 
                     <button
                         className="remove-item-btn"
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => removeFromCart(item)}
                     >
                         <FiTrash2 />
                     </button>
@@ -75,7 +75,7 @@ function CartItem({ item }) {
 
                         <strong>
 
-                            ₹{Number(item.total_price).toFixed(2)}
+                            ₹{(Number(item.total_price) || (Number(item.price) * item.quantity)).toFixed(2)}
 
                         </strong>
 

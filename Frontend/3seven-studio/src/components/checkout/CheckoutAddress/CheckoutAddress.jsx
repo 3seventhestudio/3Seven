@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { FaCheckCircle, FaHome, FaMapMarkerAlt } from "react-icons/fa";
-import { getAddresses } from "../../../services/addressService";
+import { FaCheckCircle, FaHome, FaMapMarkerAlt, FaPlus } from "react-icons/fa";
+import { getAddresses, createAddress } from "../../../services/addressService";
 import { useCheckout } from "../../../context/CheckoutContext";
+import AddressModal from "../../account/AddressModal/AddressModal";
 import "./CheckoutAddress.css";
 
 const CheckoutAddress = () => {
@@ -13,6 +14,26 @@ const CheckoutAddress = () => {
     const [addresses, setAddresses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [showModal, setShowModal] = useState(false);
+    const [saving, setSaving] = useState(false);
+
+    const handleSaveAddress = async (payload) => {
+        try {
+            setSaving(true);
+            const newAddress = await createAddress(payload);
+            setAddresses((prev) => [...prev, newAddress]);
+            setSelectedAddress(newAddress);
+            setShowModal(false);
+        } catch (err) {
+            console.error(err);
+            alert(
+                err?.response?.data?.message ||
+                "Unable to add new address."
+            );
+        } finally {
+            setSaving(false);
+        }
+    };
 
     useEffect(() => {
         fetchAddresses();
@@ -83,8 +104,15 @@ const CheckoutAddress = () => {
     if (addresses.length === 0) {
         return (
             <section className="checkout-address">
-                <div className="checkout-section-header">
+                <div className="checkout-section-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <h2>Delivery Address</h2>
+                    <button
+                        className="add-address-btn"
+                        onClick={() => setShowModal(true)}
+                        style={{ display: "flex", alignItems: "center", gap: "8px", background: "none", border: "1px solid var(--color-primary)", padding: "8px 16px", borderRadius: "var(--radius-sm)", cursor: "pointer", color: "var(--color-primary)", fontWeight: "600" }}
+                    >
+                        <FaPlus /> Add Address
+                    </button>
                 </div>
 
                 <div className="address-empty">
@@ -92,19 +120,40 @@ const CheckoutAddress = () => {
 
                     <h3>No Address Found</h3>
 
-                    <p>
-                        Please add a delivery address from your profile before
-                        placing an order.
+                    <p style={{ marginBottom: "20px" }}>
+                        Please add a delivery address to complete your order.
                     </p>
+
+                    <button
+                        className="add-address-btn"
+                        onClick={() => setShowModal(true)}
+                        style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "var(--color-primary)", border: "none", padding: "12px 24px", borderRadius: "var(--radius-sm)", cursor: "pointer", color: "white", fontWeight: "600" }}
+                    >
+                        <FaPlus /> Add New Address
+                    </button>
                 </div>
+
+                <AddressModal
+                    open={showModal}
+                    onClose={() => setShowModal(false)}
+                    onSave={handleSaveAddress}
+                    saving={saving}
+                />
             </section>
         );
     }
 
     return (
         <section className="checkout-address">
-            <div className="checkout-section-header">
+            <div className="checkout-section-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
                 <h2>Delivery Address</h2>
+                <button
+                    className="add-address-btn"
+                    onClick={() => setShowModal(true)}
+                    style={{ display: "flex", alignItems: "center", gap: "8px", background: "none", border: "1px solid var(--color-primary)", padding: "8px 16px", borderRadius: "var(--radius-sm)", cursor: "pointer", color: "var(--color-primary)", fontWeight: "600" }}
+                >
+                    <FaPlus /> Add New
+                </button>
             </div>
 
             <div className="address-grid">
@@ -185,6 +234,13 @@ const CheckoutAddress = () => {
                     );
                 })}
             </div>
+
+            <AddressModal
+                open={showModal}
+                onClose={() => setShowModal(false)}
+                onSave={handleSaveAddress}
+                saving={saving}
+            />
         </section>
     );
 };

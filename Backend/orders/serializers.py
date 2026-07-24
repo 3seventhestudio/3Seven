@@ -140,7 +140,7 @@ class AdminOrderDetailSerializer(serializers.ModelSerializer):
         return {
             "name": full_name if full_name else obj.user.email,
             "email": obj.user.email,
-            "phone": obj.user.phone,
+            "phone": obj.user.phone_number,
         }
 
     def get_shipping_address(self, obj):
@@ -148,7 +148,7 @@ class AdminOrderDetailSerializer(serializers.ModelSerializer):
 
         return {
             "name": address.full_name,
-            "phone": address.phone,
+            "phone": address.phone_number,
             "address_line_1": address.address_line_1,
             "address_line_2": address.address_line_2,
             "city": address.city,

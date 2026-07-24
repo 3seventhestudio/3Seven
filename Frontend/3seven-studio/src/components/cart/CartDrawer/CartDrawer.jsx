@@ -70,7 +70,7 @@ function CartDrawer({
                             cartItems.map(item => (
 
                                 <CartItem
-                                    key={item.id}
+                                    key={item.id || item.variant_id}
                                     item={item}
                                 />
 

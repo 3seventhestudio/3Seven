@@ -5,13 +5,16 @@ import {
   FiHeart,
   FiMenu,
   FiX,
+  FiUser,
 } from "react-icons/fi";
 import CartIcon from "../../cart/CartIcon/CartIcon";
 import CartDrawer from "../../cart/CartDrawer/CartDrawer";
 import navigation from "../../../data/navigation";
+import { useAuth } from "../../../context/AuthContext";
 import "./Navbar.css";
 
 function Navbar() {
+  const { isAuthenticated } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
@@ -49,6 +52,10 @@ return (
         <div className="navbar-icons">
 
           <FiSearch />
+
+          <Link to={isAuthenticated ? "/account" : "/login"} aria-label="Account" style={{ display: "flex", alignItems: "center", color: "inherit" }}>
+            <FiUser />
+          </Link>
 
           <FiHeart />
 
