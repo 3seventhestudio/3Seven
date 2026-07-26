@@ -11,6 +11,8 @@ from .views import (
     AddressDefaultAPIView,
     DashboardAPIView,
     ChangePasswordAPIView,
+    AdminCustomerListAPIView,
+    AdminCustomerDetailAPIView
 )
 
 app_name = "accounts"
@@ -27,5 +29,8 @@ urlpatterns = [
     path("addresses/<uuid:address_id>/default/", AddressDefaultAPIView.as_view(), name="address-default"),
     path("dashboard/", DashboardAPIView.as_view(), name="dashboard"),
     path("change-password/", ChangePasswordAPIView.as_view(), name="change-password"),
+
+    path("admin/customers/", AdminCustomerListAPIView.as_view(), name="admin-customers"),
+    path("admin/customers/<uuid:customer_id>/", AdminCustomerDetailAPIView.as_view(), name="admin-customer-detail"),
 
 ]

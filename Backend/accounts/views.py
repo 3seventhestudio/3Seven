@@ -15,6 +15,7 @@ from accounts.serializers.profile import ProfileSerializer, UpdateProfileSeriali
 from accounts.selectors.profile_selector import ProfileSelector
 from accounts.services.auth_service import AuthService
 from accounts.services.profile_service import ProfileService
+from accounts.services.user_service import AdminCustomerService
 from accounts.models import Address
 from accounts.serializers.address import AddressSerializer, CreateUpdateAddressSerializer
 from accounts.selectors.address_selector import AddressSelector
@@ -22,6 +23,7 @@ from accounts.services.address_service import AddressService
 from accounts.selectors.dashboard_selector import DashboardSelector
 from accounts.serializers.dashboard_serializer import DashboardSerializer
 from accounts.serializers import ChangePasswordSerializer
+from accounts.serializers.customer_serializer import AdminCustomerListSerializer, AdminCustomerDetailSerializer, AdminCustomerUpdateSerializer
 
 @extend_schema(tags=["Authentication"], summary="Register User", request=RegisterSerializer)
 class RegisterAPIView(APIView):
@@ -273,4 +275,62 @@ class ChangePasswordAPIView(APIView):
 
         return success_response(
             message="Password changed successfully."
+        )
+
+class AdminCustomerListAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        customers = AdminCustomerService.get_customers(
+            request.query_params
+        )
+
+        serializer = AdminCustomerListSerializer(
+            customers,
+            many=True,
+        )
+
+        return success_response(
+            message="Customers fetched successfully.",
+            data=serializer.data,
+        )
+
+
+class AdminCustomerDetailAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, customer_id):
+        customer = AdminCustomerService.get_customer(customer_id)
+
+        serializer = AdminCustomerDetailSerializer(customer)
+
+        return success_response(
+            message="Customer fetched successfully.",
+            data=serializer.data,
+        )
+
+    def put(self, request, customer_id):
+        customer = AdminCustomerService.get_customer(customer_id)
+
+        serializer = AdminCustomerUpdateSerializer(
+            customer,
+            data=request.data,
+            partial=True,
+        )
+
+        if not serializer.is_valid():
+            return error_response(
+                message="Validation failed.",
+                errors=serializer.errors,
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
+
+        customer = AdminCustomerService.update_customer(
+            customer,
+            serializer.validated_data,
+        )
+
+        return success_response(
+            message="Customer updated successfully.",
+            data=AdminCustomerDetailSerializer(customer).data,
         )

@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "reviews",
     "cms",
     "notifications",
+    "coupons",
     "rest_framework_simplejwt.token_blacklist",
     "drf_spectacular",  
 ]

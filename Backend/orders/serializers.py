@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from accounts.serializers.address import AddressSerializer
 from orders.models import Order, OrderItem, PaymentMethod
+from reviews.models import Review
 
 
 class CheckoutSerializer(serializers.Serializer):
@@ -31,19 +32,59 @@ class CheckoutSerializer(serializers.Serializer):
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    product_slug = serializers.SerializerMethodField()
+    product_image = serializers.SerializerMethodField()
+    can_review = serializers.SerializerMethodField()
+    is_reviewed = serializers.SerializerMethodField()
+    review_id = serializers.SerializerMethodField()
 
     class Meta:
         model = OrderItem
         fields = (
             "id",
             "product_name",
+            "product_slug",
+            "product_image",
             "sku",
             "size",
             "color",
             "quantity",
             "unit_price",
             "total_price",
+            "can_review",
+            "is_reviewed",
+            "review_id",
         )
+
+    def get_product_slug(self, obj):
+        return obj.product_variant.product.slug
+
+    def get_product_image(self, obj):
+        image = obj.product_variant.product.images.filter(
+            is_deleted=False
+        ).order_by("display_order").first()
+
+        return image.image.url if image else ""
+
+    def get_can_review(self, obj):
+        return obj.order.status in [
+            "delivered",
+            "completed",
+        ]
+
+    def get_is_reviewed(self, obj):
+        return Review.objects.filter(
+            order_item=obj,
+            is_deleted=False,
+        ).exists()
+
+    def get_review_id(self, obj):
+        review = Review.objects.filter(
+            order_item=obj,
+            is_deleted=False,
+        ).first()
+
+        return str(review.id) if review else None
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -77,26 +118,21 @@ class OrderSerializer(serializers.ModelSerializer):
             "id",
             "order_number",
             "status",
-
             "payment_method",
             "payment_status",
-
             "subtotal",
             "shipping_charge",
             "cod_charge",
             "gst",
             "discount",
             "grand_total",
-
             "tracking_number",
             "tracking_url",
-
             "created_at",
-
             "shipping_address",
-
             "items",
         )
+
 
 class AdminOrderListSerializer(serializers.ModelSerializer):
     customer = serializers.SerializerMethodField()
@@ -162,6 +198,14 @@ class AdminOrderDetailSerializer(serializers.ModelSerializer):
             {
                 "id": item.id,
                 "product_name": item.product_name,
+                "product_slug": item.product_variant.product.slug,
+                "product_image": (
+                    item.product_variant.product.images.order_by(
+                        "display_order"
+                    ).first().image.url
+                    if item.product_variant.product.images.exists()
+                    else ""
+                ),
                 "sku": item.sku,
                 "size": item.size,
                 "color": item.color,
