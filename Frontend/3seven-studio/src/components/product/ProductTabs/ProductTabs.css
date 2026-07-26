@@ -1,0 +1,129 @@
+.product-tabs-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+}
+
+.product-tabs-container {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.tabs-header {
+    display: flex;
+    border-bottom: 1px solid #e5e7eb;
+    background: #fafafa;
+    gap: 0;
+}
+
+.tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 28px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    font-family: inherit;
+}
+
+.tab-btn:hover {
+    color: #111;
+    background: #f3f4f6;
+}
+
+.tab-btn.active {
+    color: #111;
+    border-bottom-color: #111;
+    background: #fff;
+}
+
+.tab-content {
+    padding: 32px;
+}
+
+.tab-pane {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.prose {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #374151;
+}
+
+.prose p {
+    margin-bottom: 16px;
+}
+
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.info-table tr {
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.info-table td {
+    padding: 14px 16px;
+    font-size: 14px;
+    color: #374151;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #111;
+    width: 180px;
+}
+
+.shipping-info {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.shipping-item h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #111;
+}
+
+.shipping-item p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #6b7280;
+}
+
+@media (max-width: 768px) {
+
+    .tabs-header {
+        overflow-x: auto;
+    }
+
+    .tab-btn {
+        padding: 14px 18px;
+        font-size: 13px;
+    }
+
+    .tab-content {
+        padding: 20px;
+    }
+
+    .info-label {
+        width: 120px;
+    }
+}

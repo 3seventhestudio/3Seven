@@ -25,7 +25,10 @@ export function CartProvider({ children }) {
 
     // Guest user
     if (!token) {
-      setCartItems([]);
+      const guestCart = JSON.parse(
+        localStorage.getItem("guest_cart") || "[]"
+      );
+      setCartItems(guestCart);
       return;
     }
 
@@ -34,29 +37,55 @@ export function CartProvider({ children }) {
 
       const cart = await getCart();
 
-      setCartItems(cart.data?.items || []);
+      setCartItems(cart?.items || cart?.data?.items || []);
 
     } catch (error) {
 
-      // If the token is invalid after refresh attempt,
-      // just clear the cart instead of crashing.
+      // If token invalid, clear cart items
       if (error.response?.status === 401) {
         setCartItems([]);
         return;
       }
 
       console.error("Unable to load cart", error);
-
       setCartItems([]);
 
     } finally {
-
       setLoading(false);
-
     }
   };
 
   const { isAuthenticated } = useAuth();
+
+  const ensureBackendCartSynced = async () => {
+    const token = localStorage.getItem("access_token");
+    if (!token) return;
+
+    try {
+      const backendCart = await getCart();
+      const backendItems = backendCart?.items || [];
+
+      if (backendItems.length === 0 && cartItems.length > 0) {
+        for (const item of cartItems) {
+          const variantId =
+            item.product_variant_id ||
+            item.variant_id ||
+            item.product_variant?.id;
+
+          if (variantId) {
+            try {
+              await addToCartApi(variantId, item.quantity);
+            } catch (e) {
+              console.error("Error syncing item to backend cart", e);
+            }
+          }
+        }
+        await loadCart();
+      }
+    } catch (e) {
+      console.error("Error ensuring backend cart synced", e);
+    }
+  };
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -65,12 +94,20 @@ export function CartProvider({ children }) {
           localStorage.getItem("guest_cart") || "[]"
         );
         if (guestCart.length > 0) {
-          try {
-            for (const item of guestCart) {
-              await addToCartApi(item.variant_id, item.quantity);
+          for (const item of guestCart) {
+            const variantId =
+              item.product_variant_id ||
+              item.variant_id ||
+              item.product_variant?.id ||
+              item.id;
+
+            if (variantId) {
+              try {
+                await addToCartApi(variantId, item.quantity);
+              } catch (e) {
+                console.error("Error merging item into backend cart", e);
+              }
             }
-          } catch (e) {
-            console.error("Error merging guest cart", e);
           }
           localStorage.removeItem("guest_cart");
         }
@@ -93,6 +130,7 @@ export function CartProvider({ children }) {
       );
     }
   }, [cartItems, isAuthenticated]);
+
   const addToCart = async (
     productVariantId,
     quantity = 1,
@@ -115,18 +153,19 @@ export function CartProvider({ children }) {
     }
 
     // Guest Cart → localStorage
-
     setCartItems((current) => {
 
       const existing = current.find(
         (item) =>
-          item.variant_id === productVariantId
+          item.product_variant_id === productVariantId ||
+          item.variant_id === productVariantId ||
+          item.id === productVariantId
       );
 
       if (existing) {
 
         return current.map((item) =>
-          item.variant_id === productVariantId
+          (item.product_variant_id === productVariantId || item.variant_id === productVariantId || item.id === productVariantId)
             ? {
                 ...item,
                 quantity:
@@ -141,6 +180,7 @@ export function CartProvider({ children }) {
         ...current,
         {
           ...productData,
+          product_variant_id: productVariantId,
           variant_id: productVariantId,
           quantity,
         },
@@ -158,7 +198,7 @@ export function CartProvider({ children }) {
 
           setCartItems(current =>
               current.map(cartItem =>
-                  cartItem.variant_id === item.variant_id
+                  (cartItem.product_variant_id === item.product_variant_id || cartItem.variant_id === item.variant_id || cartItem.id === item.id)
                       ? {
                             ...cartItem,
                             quantity: cartItem.quantity + 1,
@@ -190,7 +230,9 @@ export function CartProvider({ children }) {
               setCartItems(current =>
                   current.filter(
                       cartItem =>
-                          cartItem.variant_id !== item.variant_id
+                          cartItem.product_variant_id !== item.product_variant_id &&
+                          cartItem.variant_id !== item.variant_id &&
+                          cartItem.id !== item.id
                   )
               );
 
@@ -199,7 +241,7 @@ export function CartProvider({ children }) {
 
           setCartItems(current =>
               current.map(cartItem =>
-                  cartItem.variant_id === item.variant_id
+                  (cartItem.product_variant_id === item.product_variant_id || cartItem.variant_id === item.variant_id || cartItem.id === item.id)
                       ? {
                             ...cartItem,
                             quantity: cartItem.quantity - 1,
@@ -236,7 +278,10 @@ export function CartProvider({ children }) {
 
           setCartItems(current =>
               current.filter(
-                  cartItem => cartItem.variant_id !== item.variant_id
+                  cartItem =>
+                      cartItem.product_variant_id !== item.product_variant_id &&
+                      cartItem.variant_id !== item.variant_id &&
+                      cartItem.id !== item.id
               )
           );
 
@@ -317,6 +362,7 @@ export function CartProvider({ children }) {
         discount,
         grandTotal,
         loadCart,
+        ensureBackendCartSynced,
         addToCart,
         removeFromCart,
         increaseQuantity,

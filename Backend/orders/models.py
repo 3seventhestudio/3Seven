@@ -31,6 +31,7 @@ class PaymentMethod(models.TextChoices):
     UPI = "upi", "UPI"
     CARD = "card", "Card"
     NETBANKING = "netbanking", "Net Banking"
+    RAZORPAY = "razorpay", "Razorpay / Online Payment"
 
 
 class Order(BaseModel):

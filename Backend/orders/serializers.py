@@ -30,6 +30,12 @@ class CheckoutSerializer(serializers.Serializer):
         default="",
     )
 
+    coupon_code = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        default=None,
+    )
+
 
 class OrderItemSerializer(serializers.ModelSerializer):
     product_slug = serializers.SerializerMethodField()
@@ -126,8 +132,11 @@ class OrderSerializer(serializers.ModelSerializer):
             "gst",
             "discount",
             "grand_total",
+            "courier_name",
             "tracking_number",
             "tracking_url",
+            "shipping_label",
+            "shipment_id",
             "created_at",
             "shipping_address",
             "items",

@@ -24,3 +24,21 @@ export const updateOrder = async (orderId, data) => {
 
     return response.data;
 };
+
+export const getShippingQuotes = async (orderId, packageData = {}) => {
+    const response = await api.post(
+        `/orders/admin/${orderId}/shipping-quotes/`,
+        packageData
+    );
+
+    return response.data;
+};
+
+export const acceptAndShipOrder = async (orderId, courierData = {}) => {
+    const response = await api.post(
+        `/orders/admin/${orderId}/accept-and-ship/`,
+        courierData
+    );
+
+    return response.data;
+};

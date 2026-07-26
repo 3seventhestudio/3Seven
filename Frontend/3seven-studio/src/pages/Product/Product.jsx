@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import Navbar from "../../components/layout/Navbar/Navbar";
 import Footer from "../../components/layout/Footer/Footer";
@@ -24,13 +25,9 @@ function Product() {
     const { addToCart } = useCart();
 
     const [product, setProduct] = useState(null);
-
     const [loading, setLoading] = useState(true);
-
     const [selectedVariant, setSelectedVariant] = useState(null);
-
     const [selectedSize, setSelectedSize] = useState("");
-
     const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
@@ -51,7 +48,6 @@ function Product() {
             if (productData.variants?.length) {
 
                 setSelectedVariant(productData.variants[0]);
-
                 setSelectedSize(productData.variants[0].size);
 
             }
@@ -72,7 +68,7 @@ function Product() {
 
         if (!selectedVariant) {
 
-            alert("Please select a size.");
+            toast.error("Please select a size.");
 
             return;
 
@@ -94,15 +90,56 @@ function Product() {
                 }
             );
 
-            alert("Product added to cart.");
+            toast.success("Product added to cart.");
 
         } catch (error) {
 
             console.error(error);
 
-            alert(
+            toast.error(
                 error?.response?.data?.message ||
                 "Unable to add product to cart."
+            );
+
+        }
+
+    };
+
+    const handleBuyNow = async () => {
+
+        if (!selectedVariant) {
+
+            toast.error("Please select a size.");
+
+            return;
+
+        }
+
+        try {
+
+            await addToCart(
+                selectedVariant.id,
+                quantity,
+                {
+                    id: product.id,
+                    product_name: product.name,
+                    product_slug: product.slug,
+                    thumbnail: product.thumbnail,
+                    price: Number(selectedVariant.price),
+                    size: selectedVariant.size,
+                    color: selectedVariant.color,
+                }
+            );
+
+            navigate("/checkout");
+
+        } catch (error) {
+
+            console.error(error);
+
+            toast.error(
+                error?.response?.data?.message ||
+                "Unable to proceed to checkout."
             );
 
         }
@@ -150,7 +187,7 @@ function Product() {
                     <ProductGallery
                         product={product}
                     />
-                    <ProductReviews productSlug={product.slug} />
+
                     <ProductDetails
                         product={product}
                         selectedVariant={selectedVariant}
@@ -160,6 +197,7 @@ function Product() {
                         quantity={quantity}
                         setQuantity={setQuantity}
                         onAddToCart={handleAddToCart}
+                        onBuyNow={handleBuyNow}
                     />
 
                 </div>
@@ -169,6 +207,8 @@ function Product() {
             <ProductTabs
                 product={product}
             />
+
+            <ProductReviews productSlug={product.slug} />
 
             <RelatedProducts
                 category={product.category}

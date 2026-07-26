@@ -4,9 +4,15 @@ from .views import (
     AdminCouponListAPIView,
     AdminCouponDetailAPIView,
     AdminProductDropdownAPIView,
+    ApplyCouponAPIView,
 )
 
 urlpatterns = [
+    path(
+        "apply/",
+        ApplyCouponAPIView.as_view(),
+        name="apply-coupon",
+    ),
     path(
         "admin/",
         AdminCouponListAPIView.as_view(),

@@ -1,14 +1,34 @@
-import { FaMoneyBillWave } from "react-icons/fa";
+import { Banknote, CreditCard, Smartphone, Building2 } from "lucide-react";
 import { useCheckout } from "../../../context/CheckoutContext";
 import "./PaymentMethod.css";
 
 const PAYMENT_METHODS = [
     {
         id: "cod",
-        title: "Cash on Delivery",
-        description:
-            "Pay in cash when your order is delivered.",
-        icon: <FaMoneyBillWave />,
+        title: "Cash on Delivery (COD)",
+        description: "Pay in cash when your order is delivered.",
+        icon: <Banknote size={24} />,
+        disabled: false,
+    },
+    {
+        id: "razorpay",
+        title: "Razorpay / Online Payment",
+        description: "Pay securely via Credit/Debit Card, UPI, Netbanking, or Wallets.",
+        icon: <CreditCard size={24} />,
+        disabled: false,
+    },
+    {
+        id: "upi",
+        title: "UPI (Google Pay / PhonePe / Paytm)",
+        description: "Instant UPI payment via Razorpay.",
+        icon: <Smartphone size={24} />,
+        disabled: false,
+    },
+    {
+        id: "netbanking",
+        title: "Net Banking",
+        description: "All major Indian banks supported.",
+        icon: <Building2 size={24} />,
         disabled: false,
     },
 ];

@@ -9,7 +9,10 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from django.contrib.auth.password_validation import validate_password
 
 from common.responses import success_response, error_response
+from common.permissions import IsAdminUserPermission
 
+from accounts.selectors.admin_dashboard_selector import AdminDashboardSelector
+from accounts.serializers.admin_dashboard_serializer import AdminDashboardSerializer
 from accounts.serializers.auth import RegisterSerializer, LoginSerializer
 from accounts.serializers.profile import ProfileSerializer, UpdateProfileSerializer
 from accounts.selectors.profile_selector import ProfileSelector
@@ -333,4 +336,16 @@ class AdminCustomerDetailAPIView(APIView):
         return success_response(
             message="Customer updated successfully.",
             data=AdminCustomerDetailSerializer(customer).data,
+        )
+
+
+class AdminDashboardAPIView(APIView):
+    permission_classes = [IsAdminUserPermission]
+
+    def get(self, request):
+        data = AdminDashboardSelector.get_dashboard_data()
+        serializer = AdminDashboardSerializer(data)
+        return success_response(
+            message="Dashboard data fetched successfully.",
+            data=serializer.data,
         )

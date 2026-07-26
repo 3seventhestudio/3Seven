@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import Navbar from "../../components/layout/Navbar/Navbar";
 import Footer from "../../components/layout/Footer/Footer";
 import Breadcrumb from "../../components/common/Breadcrumb/Breadcrumb";
@@ -9,6 +11,16 @@ import CouponForm from "../../components/cart/CouponForm/CouponForm";
 import "./Cart.css";
 
 function Cart() {
+
+    const [appliedCoupon, setAppliedCoupon] = useState(null);
+
+    const handleCouponApplied = (couponData) => {
+        setAppliedCoupon(couponData);
+    };
+
+    const handleCouponRemoved = () => {
+        setAppliedCoupon(null);
+    };
 
     return (
 
@@ -50,13 +62,19 @@ function Cart() {
 
                             <CartTable />
 
-                            <CouponForm />
+                            <CouponForm
+                                onCouponApplied={handleCouponApplied}
+                                appliedCoupon={appliedCoupon}
+                                onCouponRemoved={handleCouponRemoved}
+                            />
 
                         </div>
 
                         <div className="cart-right">
 
-                            <CartSummaryCard />
+                            <CartSummaryCard
+                                appliedCoupon={appliedCoupon}
+                            />
 
                         </div>
 

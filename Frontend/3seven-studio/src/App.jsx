@@ -15,6 +15,7 @@ import About from "./pages/About/About";
 import Journal from "./pages/Journal/Journal";
 import Collections from "./pages/Collections/Collections";
 import Contact from "./pages/Contact/Contact";
+import Wishlist from "./pages/Wishlist/Wishlist";
 
 import OrderSuccess from "./pages/Orders/OrderSuccess/OrderSuccess";
 import MyOrders from "./pages/Orders/MyOrders/MyOrders";
@@ -98,6 +99,7 @@ function App() {
                 <Route path="/about" element={<About />} />
                 <Route path="/journal" element={<Journal />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/orders" element={<MyOrders />} />
                 <Route path="/orders/success/:orderNumber" element={<OrderSuccess />} />
                 <Route path="/orders/:orderNumber" element={<OrderDetails />} />

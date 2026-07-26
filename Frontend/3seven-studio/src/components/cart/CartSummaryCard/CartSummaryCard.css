@@ -75,6 +75,20 @@
 
 }
 
+.discount-row {
+    color: #059669;
+}
+
+.discount-row span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.discount-value {
+    color: #059669;
+}
+
 .checkout-btn{
 
     display:flex;

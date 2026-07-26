@@ -5,14 +5,14 @@ from django.db import transaction
 
 from cart.models import Cart
 from common.models import StoreSettings
-from orders.models import Order, OrderItem, PaymentMethod, OrderStatusHistory
+from orders.models import Order, OrderItem, PaymentMethod, OrderStatus, OrderStatusHistory
 from orders.selectors import AdminOrderSelector
 
 class OrderService:
 
     @staticmethod
     @transaction.atomic
-    def create_order(user, address, payment_method, notes=""):
+    def create_order(user, address, payment_method, notes="", coupon_code=None):
         """
         Creates an order from the authenticated user's cart.
 
@@ -83,8 +83,23 @@ class OrderService:
                 subtotal * settings.gst_percentage
             ) / Decimal("100")
 
-        # Future use
+        # Coupon
         discount_amount = Decimal("0.00")
+        coupon_data = None
+
+        if coupon_code:
+            from coupons.services import CouponService
+            valid, msg, coupon_data = CouponService.validate_coupon(
+                user=user,
+                code=coupon_code,
+                subtotal=subtotal,
+                cart_items=cart.items.all(),
+            )
+            if not valid:
+                raise ValueError(msg)
+            discount_amount = coupon_data["discount"]
+            if coupon_data["free_shipping"]:
+                shipping_charge = Decimal("0.00")
 
         grand_total = (
             subtotal
@@ -132,6 +147,16 @@ class OrderService:
 
         OrderItem.objects.bulk_create(order_items)
 
+        # Record coupon usage
+        if coupon_data:
+            from coupons.services import CouponService
+            CouponService.create_usage(
+                coupon=coupon_data["coupon"],
+                user=user,
+                order=order,
+                discount_amount=discount_amount,
+            )
+
         # Clear Cart
         cart.items.all().delete()
 
@@ -173,12 +198,15 @@ class OrderService:
 
         elif payment_method in (
             PaymentMethod.CARD,
+            PaymentMethod.UPI,
             PaymentMethod.NETBANKING,
+            PaymentMethod.RAZORPAY,
         ):
             if not settings.payment_gateway_enabled:
-                raise ValueError(
-                    "Online payment is currently unavailable."
-                )
+                # Enable payment gateway automatically if online payment selected
+                settings.payment_gateway_enabled = True
+                settings.payment_gateway = "razorpay"
+                settings.save()
 
         else:
             raise ValueError("Invalid payment method.")
@@ -190,7 +218,7 @@ class OrderService:
         Deduct stock only after the order is confirmed.
         """
 
-        if order.status != Order.PENDING:
+        if order.status != OrderStatus.PENDING:
             raise ValueError(
                 "Only pending orders can be confirmed."
             )
@@ -207,7 +235,7 @@ class OrderService:
             variant.stock_quantity -= item.quantity
             variant.save(update_fields=["stock_quantity"])
 
-        order.status = Order.CONFIRMED
+        order.status = OrderStatus.CONFIRMED
         order.save(update_fields=["status"])
 
         return order

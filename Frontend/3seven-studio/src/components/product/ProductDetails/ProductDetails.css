@@ -136,6 +136,17 @@
     color:#111;
 }
 
+.wishlist-btn.wishlisted{
+    border-color:#fca5a5;
+    background:#fef2f2;
+    color:#ef4444;
+}
+
+.wishlist-btn:disabled{
+    opacity:0.6;
+    cursor:not-allowed;
+}
+
 .product-benefits{
     margin-top:20px;
     border-top:1px solid #eee;

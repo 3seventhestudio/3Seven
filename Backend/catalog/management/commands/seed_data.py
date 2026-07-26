@@ -26,13 +26,19 @@ class Command(BaseCommand):
         settings_obj.save()
         self.stdout.write("StoreSettings initialized.")
 
-        # 2. Create Sizes
+        # 2. Create Sizes (Numeric for Jeans/Pants, Alpha for Shirts/T-Shirts/Jackets/Dresses)
         sizes_data = [
-            ("XS", 1),
-            ("S", 2),
-            ("M", 3),
-            ("L", 4),
-            ("XL", 5),
+            ("26", 1),
+            ("28", 2),
+            ("30", 3),
+            ("32", 4),
+            ("34", 5),
+            ("XS", 6),
+            ("S", 7),
+            ("M", 8),
+            ("L", 9),
+            ("XL", 10),
+            ("XXL", 11),
         ]
         sizes = {}
         for name, order in sizes_data:
@@ -101,7 +107,7 @@ class Command(BaseCommand):
             b'\x00\x02\x11\x03\x11\x00?\x00\xed\xfc\xff\xd9'
         )
 
-        # 5. Seed Products with real image mappings
+        # 5. Seed Products with real image mappings & category-appropriate sizes
         products_data = [
             {
                 "category": categories["jeans"],
@@ -113,7 +119,7 @@ class Command(BaseCommand):
                 "featured": True,
                 "new_arrival": False,
                 "best_seller": True,
-                "sizes": ["S", "M", "L"],
+                "sizes": ["26", "28", "30", "32", "34"],
                 "colors": ["Indigo Blue", "Acid Wash"],
                 "image_name": "product-1.jpg"
             },
@@ -127,7 +133,7 @@ class Command(BaseCommand):
                 "featured": False,
                 "new_arrival": True,
                 "best_seller": True,
-                "sizes": ["M", "L", "XL"],
+                "sizes": ["26", "28", "30", "32", "34"],
                 "colors": ["Indigo Blue", "Jet Black"],
                 "image_name": "product-2.jpg"
             },
@@ -155,7 +161,7 @@ class Command(BaseCommand):
                 "featured": False,
                 "new_arrival": True,
                 "best_seller": False,
-                "sizes": ["XS", "S", "M", "L"],
+                "sizes": ["S", "M", "L", "XL"],
                 "colors": ["Off-White", "Olive Green"],
                 "image_name": "product-4.jpg"
             },
@@ -169,7 +175,7 @@ class Command(BaseCommand):
                 "featured": True,
                 "new_arrival": False,
                 "best_seller": False,
-                "sizes": ["XS", "S", "M", "L"],
+                "sizes": ["XS", "S", "M", "L", "XL"],
                 "colors": ["Jet Black", "Off-White"],
                 "image_name": "product-5.jpg"
             },
@@ -240,6 +246,9 @@ class Command(BaseCommand):
                         is_primary=True,
                         display_order=1
                     )
+
+            # Clean up old invalid size variants for this product
+            product.variants.exclude(size__name__in=p_info["sizes"]).delete()
 
             # Create/Update Variants for Sizes x Colors combinations
             for color_name in p_info["colors"]:

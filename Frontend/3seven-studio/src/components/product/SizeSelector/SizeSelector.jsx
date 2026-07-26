@@ -1,87 +1,46 @@
-import { useEffect, useState } from "react";
 import "./SizeSelector.css";
 
 function SizeSelector({
-
     variants = [],
-
+    value = "",
     onChange,
-
 }) {
 
     const sizes = [...new Map(
-
         variants.map(item => [
-
             item.size,
-
             item,
-
         ])
-
     ).values()];
 
-    const [selected, setSelected] = useState(null);
-
-    useEffect(() => {
-
-        if (sizes.length) {
-
-            setSelected(sizes[0].size);
-
-            onChange?.(sizes[0].size);
-
-        }
-
-    }, [variants]);
+    const activeSize = value || (sizes.length > 0 ? sizes[0].size : "");
 
     const handleSelect = (size) => {
-
-        setSelected(size);
-
         onChange?.(size);
-
     };
+
+    if (!sizes.length) return null;
 
     return (
 
         <div className="size-selector">
 
-            <h4>
-
-                Select Size
-
-            </h4>
+            <h4>Select Size</h4>
 
             <div className="size-list">
 
-                {
+                {sizes.map((item) => (
 
-                    sizes.map((item) => (
+                    <button
+                        key={item.size}
+                        type="button"
+                        className={activeSize === item.size ? "active" : ""}
+                        onClick={() => handleSelect(item.size)}
+                    >
+                        {item.size}
+                    </button>
 
-                        <button
-
-                            key={item.size}
-
-                            className={
-                                selected === item.size
-                                    ? "active"
-                                    : ""
-                            }
-
-                            onClick={() =>
-                                handleSelect(item.size)
-                            }
-
-                        >
-
-                            {item.size}
-
-                        </button>
-
-                    ))
-
-                }
+                ))}
 
             </div>
 

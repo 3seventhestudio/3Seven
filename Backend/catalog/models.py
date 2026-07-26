@@ -46,6 +46,7 @@ class Product(BaseModel):
     new_arrival = models.BooleanField(default=False)
     best_seller = models.BooleanField(default=False)
     stock_quantity = models.PositiveIntegerField(default=0)
+    weight = models.DecimalField(max_digits=6, decimal_places=2, default=0.60, help_text="Weight in KG per unit")
     thumbnail = models.ImageField(upload_to="products/",blank=True,null=True)
 
     class Meta:

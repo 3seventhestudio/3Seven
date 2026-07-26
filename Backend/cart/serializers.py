@@ -14,6 +14,7 @@ class UpdateCartItemSerializer(serializers.Serializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     product_id = serializers.UUIDField(source="product_variant.product.id", read_only=True)
+    product_variant_id = serializers.UUIDField(source="product_variant.id", read_only=True)
     product_name = serializers.CharField(source="product_variant.product.name", read_only=True)
     product_slug = serializers.CharField(source="product_variant.product.slug", read_only=True)
     thumbnail = serializers.ImageField(source="product_variant.product.thumbnail", read_only=True)
@@ -28,6 +29,7 @@ class CartItemSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "product_id",
+            "product_variant_id",
             "product_name",
             "product_slug",
             "thumbnail",

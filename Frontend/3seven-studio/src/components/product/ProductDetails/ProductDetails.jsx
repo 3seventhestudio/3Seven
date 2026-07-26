@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Heart, ShoppingBag, Zap } from "lucide-react";
+import { toast } from "react-toastify";
 
 import QuantitySelector from "../QuantitySelector/QuantitySelector";
 import SizeSelector from "../SizeSelector/SizeSelector";
-import { useCart} from "../../../context/CartContext";
+import { toggleWishlist } from "../../../services/wishlistService";
 
 import "./ProductDetails.css";
 
@@ -15,18 +17,45 @@ function ProductDetails({
     quantity,
     setQuantity,
     onAddToCart,
+    onBuyNow,
 }) {
 
-    const handleSizeChange = (size) => {
+    const [wishlisted, setWishlisted] = useState(false);
+    const [wishlistLoading, setWishlistLoading] = useState(false);
 
-        setSelectedSize(size);
+    const handleWishlistToggle = async () => {
 
-        const variant = product.variants.find(
-            (item) => item.size === size
-        );
+        const token = localStorage.getItem("access_token");
 
-        if (variant) {
-            setSelectedVariant(variant);
+        if (!token) {
+            toast.info("Please log in to save items to your wishlist.");
+            return;
+        }
+
+        try {
+
+            setWishlistLoading(true);
+
+            const response = await toggleWishlist(product.id);
+
+            const inWishlist = response.data?.in_wishlist;
+
+            setWishlisted(inWishlist);
+
+            toast.success(
+                inWishlist
+                    ? "Added to wishlist."
+                    : "Removed from wishlist."
+            );
+
+        } catch (error) {
+
+            toast.error("Failed to update wishlist.");
+
+        } finally {
+
+            setWishlistLoading(false);
+
         }
 
     };
@@ -117,6 +146,7 @@ function ProductDetails({
                 <button
                     className="buy-now-btn"
                     disabled={!selectedVariant}
+                    onClick={onBuyNow}
                 >
 
                     <Zap size={20} />
@@ -127,11 +157,19 @@ function ProductDetails({
 
             </div>
 
-            <button className="wishlist-btn">
+            <button
+                className={`wishlist-btn ${wishlisted ? "wishlisted" : ""}`}
+                onClick={handleWishlistToggle}
+                disabled={wishlistLoading}
+            >
 
-                <Heart size={18} />
+                <Heart
+                    size={18}
+                    fill={wishlisted ? "#ef4444" : "none"}
+                    color={wishlisted ? "#ef4444" : "currentColor"}
+                />
 
-                Save to Wishlist
+                {wishlisted ? "Saved to Wishlist" : "Save to Wishlist"}
 
             </button>
 

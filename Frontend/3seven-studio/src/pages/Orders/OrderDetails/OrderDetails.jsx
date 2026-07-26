@@ -1,5 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import {
+    CheckCircle2,
+    Clock,
+    Package,
+    Truck,
+    CheckCheck,
+    Copy,
+    ExternalLink,
+    FileText,
+} from "lucide-react";
 
 import Navbar from "../../../components/layout/Navbar/Navbar";
 import Footer from "../../../components/layout/Footer/Footer";
@@ -23,6 +34,7 @@ function OrderDetails() {
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [copied, setCopied] = useState(false);
 
     const [reviewModalOpen, setReviewModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
@@ -39,48 +51,43 @@ function OrderDetails() {
             setError("");
 
             const data = await getOrderDetails(orderNumber);
-
             setOrder(data);
 
         } catch (err) {
             console.error(err);
-
             setError(
                 err?.response?.data?.message ||
                 "Unable to load order."
             );
-
         } finally {
             setLoading(false);
         }
     };
 
+    const handleCopyTracking = () => {
+        if (order?.tracking_number) {
+            navigator.clipboard.writeText(order.tracking_number);
+            setCopied(true);
+            toast.success("Tracking number copied to clipboard!");
+            setTimeout(() => setCopied(false), 2000);
+        }
+    };
+
     const handleReview = async (item) => {
-
         try {
-
             setSelectedItem(item);
 
             if (item.is_reviewed && item.review_id) {
-
                 const response = await getReview(item.review_id);
-
                 setSelectedReview(response.data);
-
             } else {
-
                 setSelectedReview(null);
-
             }
 
             setReviewModalOpen(true);
-
         } catch (error) {
-
             console.error(error);
-
         }
-
     };
 
     const handleReviewSubmit = async (formData) => {
@@ -110,13 +117,43 @@ function OrderDetails() {
         }
     };
 
+    const getStepStatus = (stepName) => {
+        if (!order) return "pending";
+
+        const status = order.status?.toLowerCase();
+
+        const statusOrder = [
+            "pending",
+            "confirmed",
+            "processing",
+            "shipped",
+            "delivered",
+        ];
+
+        const currentIndex = statusOrder.indexOf(status);
+
+        const stepIndexes = {
+            placed: 0,
+            accepted: 1,
+            shipped: 3,
+            out_for_delivery: 3,
+            delivered: 4,
+        };
+
+        const targetIndex = stepIndexes[stepName];
+
+        if (status === "cancelled") return "cancelled";
+        if (currentIndex >= targetIndex) return "completed";
+        if (currentIndex === targetIndex - 1) return "current";
+        return "pending";
+    };
 
     if (loading) {
         return (
             <>
                 <Navbar />
                 <div className="page-loader">
-                    Loading order...
+                    Loading order details...
                 </div>
                 <Footer />
             </>
@@ -177,6 +214,128 @@ function OrderDetails() {
                         <OrderStatusBadge
                             status={order.status}
                         />
+
+                    </div>
+
+                    {/* Amazon / Flipkart Style Live Shipment Stepper */}
+                    <div className="order-tracker-card">
+
+                        <h3 className="tracker-title">Order Status</h3>
+
+                        <div className="stepper-wrapper">
+
+                            <div className={`stepper-step ${getStepStatus("placed")}`}>
+                                <div className="step-icon">
+                                    <Clock size={18} />
+                                </div>
+                                <div className="step-content">
+                                    <span className="step-label">Order Placed</span>
+                                    <span className="step-sub">{formatDate(order.created_at)}</span>
+                                </div>
+                            </div>
+
+                            <div className="stepper-line" />
+
+                            <div className={`stepper-step ${getStepStatus("accepted")}`}>
+                                <div className="step-icon">
+                                    <CheckCircle2 size={18} />
+                                </div>
+                                <div className="step-content">
+                                    <span className="step-label">Order Accepted</span>
+                                    <span className="step-sub">
+                                        {order.status === "pending" ? "Awaiting Admin Approval" : "Accepted by 3Seven Studio"}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="stepper-line" />
+
+                            <div className={`stepper-step ${getStepStatus("shipped")}`}>
+                                <div className="step-icon">
+                                    <Truck size={18} />
+                                </div>
+                                <div className="step-content">
+                                    <span className="step-label">Shipped (Envia Road)</span>
+                                    <span className="step-sub">
+                                        {order.courier_name || (order.tracking_number ? "In Transit" : "Preparing Shipment")}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="stepper-line" />
+
+                            <div className={`stepper-step ${getStepStatus("delivered")}`}>
+                                <div className="step-icon">
+                                    <CheckCheck size={18} />
+                                </div>
+                                <div className="step-content">
+                                    <span className="step-label">Delivered</span>
+                                    <span className="step-sub">
+                                        {order.status === "delivered" ? "Delivered" : "Est. Road Delivery 3-5 Days"}
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        {/* Shipment Details Box */}
+                        {order.tracking_number && (
+
+                            <div className="shipment-info-box">
+
+                                <div className="shipment-info-left">
+
+                                    <span className="courier-badge">
+                                        <Truck size={14} />
+                                        {order.courier_name || "Envia Surface Road Delivery"}
+                                    </span>
+
+                                    <div className="tracking-number-row">
+                                        <span>Tracking ID: <strong>{order.tracking_number}</strong></span>
+
+                                        <button
+                                            className="copy-btn"
+                                            onClick={handleCopyTracking}
+                                            title="Copy Tracking Number"
+                                        >
+                                            <Copy size={14} />
+                                            {copied ? "Copied" : "Copy"}
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                                <div className="shipment-info-right">
+
+                                    {order.tracking_url && (
+                                        <a
+                                            href={order.tracking_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="track-link-btn"
+                                        >
+                                            Track Shipment
+                                            <ExternalLink size={14} />
+                                        </a>
+                                    )}
+
+                                    {order.shipping_label && (
+                                        <a
+                                            href={order.shipping_label}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="label-link-btn"
+                                        >
+                                            <FileText size={14} />
+                                            Shipping Label
+                                        </a>
+                                    )}
+
+                                </div>
+
+                            </div>
+
+                        )}
 
                     </div>
 

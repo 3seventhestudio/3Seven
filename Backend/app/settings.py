@@ -194,3 +194,6 @@ SPECTACULAR_SETTINGS = {
 
 ENVIA_BASE_URL = os.getenv("ENVIA_BASE_URL", default="")
 ENVIA_API_KEY = os.getenv("ENVIA_API_KEY", default="")
+
+RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID", default="")
+RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET", default="")
