@@ -9,6 +9,7 @@ import ProductGallery from "../../components/product/ProductGallery/ProductGalle
 import ProductDetails from "../../components/product/ProductDetails/ProductDetails";
 import ProductTabs from "../../components/product/ProductTabs/ProductTabs";
 import RelatedProducts from "../../components/product/RelatedProducts/RelatedProducts";
+import { ProductReviews } from "../../components/reviews";
 
 import { getProduct } from "../../services/productService";
 import { useCart } from "../../context/CartContext";
@@ -149,7 +150,7 @@ function Product() {
                     <ProductGallery
                         product={product}
                     />
-
+                    <ProductReviews productSlug={product.slug} />
                     <ProductDetails
                         product={product}
                         selectedVariant={selectedVariant}

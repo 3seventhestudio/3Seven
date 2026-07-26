@@ -6,9 +6,11 @@ import Footer from "../../../components/layout/Footer/Footer";
 import Breadcrumb from "../../../components/common/Breadcrumb/Breadcrumb";
 
 import OrderStatusBadge from "../../../components/orders/OrderStatusBadge/OrderStatusBadge";
+import ReviewModal from "../../../components/reviews/ReviewModal";
 import PaymentStatusBadge from "../../../components/orders/PaymentStatusBadge/PaymentStatusBadge";
 
 import { getOrderDetails } from "../../../services/orderService";
+import { createReview, updateReview, getReview } from "../../../services/reviewService";
 
 import { formatCurrency } from "../../../utils/formatters/currency";
 import { formatDate } from "../../../utils/formatters/date";
@@ -21,6 +23,11 @@ function OrderDetails() {
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+
+    const [reviewModalOpen, setReviewModalOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedReview, setSelectedReview] = useState(null);
+    const [reviewLoading, setReviewLoading] = useState(false);
 
     useEffect(() => {
         loadOrder();
@@ -47,6 +54,62 @@ function OrderDetails() {
             setLoading(false);
         }
     };
+
+    const handleReview = async (item) => {
+
+        try {
+
+            setSelectedItem(item);
+
+            if (item.is_reviewed && item.review_id) {
+
+                const response = await getReview(item.review_id);
+
+                setSelectedReview(response.data);
+
+            } else {
+
+                setSelectedReview(null);
+
+            }
+
+            setReviewModalOpen(true);
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
+    };
+
+    const handleReviewSubmit = async (formData) => {
+        try {
+            setReviewLoading(true);
+            if (selectedItem.is_reviewed) {
+                await updateReview(
+                    selectedItem.review_id,
+                    formData
+                );
+            } else {
+                await createReview(
+                    selectedItem.product_slug,
+                    {
+                        ...formData,
+                        order_item_id: selectedItem.id,
+                    }
+                );
+            }
+            setReviewModalOpen(false);
+            setSelectedReview(null);
+            await loadOrder();
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setReviewLoading(false);
+        }
+    };
+
 
     if (loading) {
         return (
@@ -163,36 +226,54 @@ function OrderDetails() {
 
                         {order.items.map((item) => (
 
-                            <div
-                                className="order-item"
-                                key={item.id}
-                            >
+                            <div className="order-item" key={item.id} >
+                                <div className="order-item-left">
 
-                                <div>
+                                <img
+                                    src={item.product_image}
+                                    alt={item.product_name}
+                                    className="order-item-image"
+                                />
 
-                                    <strong>
-                                        {item.product_name}
-                                    </strong>
+                                <div className="order-item-info">
 
-                                    <p>
-                                        Size: {item.size}
-                                    </p>
+                                    <strong>{item.product_name}</strong>
 
-                                    <p>
-                                        Color: {item.color}
-                                    </p>
+                                    <p>Size: {item.size}</p>
 
-                                    <p>
-                                        Qty: {item.quantity}
-                                    </p>
+                                    <p>Color: {item.color}</p>
+
+                                    <p>Qty: {item.quantity}</p>
+
+                                    {item.can_review && !item.is_reviewed && (
+                                        <button
+                                            className="review-btn"
+                                            onClick={() => handleReview(item)}
+                                        >
+                                            Write Review
+                                        </button>
+                                    )}
+
+                                    {item.is_reviewed && (
+                                        <button
+                                            className="review-btn secondary"
+                                            onClick={() => handleReview(item)}
+                                        >
+                                            Edit Review
+                                        </button>
+                                    )}
 
                                 </div>
 
+                            </div>
+
+                            <div className="order-item-right">
+
                                 <strong>
-                                    {formatCurrency(
-                                        item.total_price
-                                    )}
+                                    {formatCurrency(item.total_price)}
                                 </strong>
+
+                            </div>
 
                             </div>
 
@@ -285,6 +366,26 @@ function OrderDetails() {
             </section>
 
             <Footer />
+            <ReviewModal
+                open={reviewModalOpen}
+                loading={reviewLoading}
+                review={
+                    selectedItem?.is_reviewed
+                        ? {
+                            id: selectedItem.review_id,
+                            rating: selectedItem.rating,
+                            title: selectedItem.review_title,
+                            comment: selectedItem.review_comment,
+                        }
+                        : null
+                }
+                onClose={() => {
+                    setReviewModalOpen(false);
+                    setSelectedReview(null);
+                }}
+                onSubmit={handleReviewSubmit}
+            />
+            
         </>
     );
 }

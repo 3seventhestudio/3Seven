@@ -122,3 +122,68 @@
     }
 
 }
+.order-item-left {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex: 1;
+}
+
+.order-item-image {
+    width: 90px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #ececec;
+    background: #fff;
+}
+
+.order-item-info {
+    flex: 1;
+}
+
+.order-item-right {
+    text-align: right;
+    min-width: 120px;
+}
+
+.review-btn {
+    margin-top: 14px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #111;
+    color: #fff;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.review-btn:hover {
+    background: #333;
+}
+
+.review-btn.secondary {
+    background: #d4a017;
+}
+
+.review-btn.secondary:hover {
+    background: #b88a00;
+}
+
+@media (max-width:768px) {
+
+    .order-item-left {
+        flex-direction: column;
+    }
+
+    .order-item-right {
+        text-align: left;
+    }
+
+    .order-item-image {
+        width: 100%;
+        max-width: 180px;
+        height: auto;
+    }
+
+}

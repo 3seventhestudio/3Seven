@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import AuthLayout from "../../components/auth/AuthLayout/AuthLayout";
 import AuthCard from "../../components/auth/AuthCard/AuthCard";
@@ -14,6 +14,9 @@ import "./Login.css";
 function Login() {
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const expired = queryParams.get("expired");
 
     const { login } = useAuth();
 
@@ -110,6 +113,12 @@ function Login() {
                     </p>
 
                 </div>
+
+                {expired && (
+                    <div className="login-error" style={{ background: "rgba(163, 39, 76, 0.08)", color: "var(--color-secondary, #A3274C)", border: "1px solid rgba(163, 39, 76, 0.2)", padding: "12px", borderRadius: "var(--radius-sm, 12px)", marginBottom: "20px", fontSize: "14px", fontWeight: "600", textAlign: "center" }}>
+                        Your session has expired. Please log in again to continue.
+                    </div>
+                )}
 
                 {
                     error &&

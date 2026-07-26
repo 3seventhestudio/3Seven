@@ -36,26 +36,32 @@
     align-items: center;
 }
 
-.logo {
+.logo-luxury {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     text-decoration: none;
     color: var(--color-text);
+    line-height: 1;
 }
 
-.logo-number {
+.logo-main {
     font-family: "Cormorant Garamond", serif;
-    font-size: 46px;
+    font-size: 28px;
     font-weight: 700;
-    margin-right: 4px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
 }
 
-.logo-text {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 30px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
+.logo-sub {
+    font-family: "Inter", sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.45em;
     text-transform: uppercase;
+    color: var(--color-secondary);
+    margin-top: 5px;
+    margin-left: 2px;
 }
 
 .nav {

@@ -19,6 +19,18 @@ export const AuthProvider = ({ children }) => {
 
     }, []);
 
+    useEffect(() => {
+        const handleAuthLogout = () => {
+            logout();
+            window.location.href = "/login?expired=true";
+        };
+
+        window.addEventListener("auth-logout", handleAuthLogout);
+        return () => {
+            window.removeEventListener("auth-logout", handleAuthLogout);
+        };
+    }, []);
+
     const login = (userData, accessToken, refreshToken) => {
 
         localStorage.setItem("user", JSON.stringify(userData));

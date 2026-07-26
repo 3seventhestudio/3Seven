@@ -47,18 +47,21 @@
     z-index:5;
 }
 
-.out-of-stock{
-    position:absolute;
-    top:18px;
-    right:18px;
-    background:#ffffff;
-    color:#111;
-    padding:8px 14px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:600;
-    z-index:5;
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
+.out-of-stock {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(2px);
+    color: #1E1E1E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    z-index: 4;
+    pointer-events: none;
 }
 
 .wishlist-btn{

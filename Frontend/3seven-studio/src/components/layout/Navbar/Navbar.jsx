@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
   FiSearch,
   FiHeart,
@@ -18,11 +18,14 @@ function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  console.log("cartOpen =", cartOpen);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -32,20 +35,25 @@ function Navbar() {
 
 return (
   <>
-    <header className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
+    <header className={scrolled ? "navbar navbar-scrolled" : "navbar"}>
 
       <div className="navbar-container">
 
-        <Link to="/" className="logo">
-          <span className="logo-number">3</span>
-          <span className="logo-text">3Seven Studio</span>
+        <Link to="/" className="logo-luxury">
+          <div className="logo-main">3SEVEN</div>
+          <div className="logo-sub">STUDIO</div>
         </Link>
 
         <nav className={mobileMenu ? "nav active" : "nav"}>
           {navigation.map((item) => (
-            <Link key={item.id} to={item.path}>
+            <NavLink
+              key={item.id}
+              to={item.path}
+              className={({ isActive }) => (isActive ? "active" : "")}
+              end={item.path === "/"}
+            >
               {item.label}
-            </Link>
+            </NavLink>
           ))}
         </nav>
 
